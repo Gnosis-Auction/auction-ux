@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import { HashLink } from 'react-router-hash-link'
 import { useAccount, useConnect, useDisconnect, useSwitchNetwork } from 'wagmi'
 
-import { walletConnectConnector } from '../../../connectors'
 import { chainNames } from '../../../constants'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { useOrderPlacementState } from '../../../state/orderPlacement/hooks'
