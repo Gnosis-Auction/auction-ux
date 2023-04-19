@@ -3,8 +3,9 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { HashLink } from 'react-router-hash-link'
-import { useAccount, useSwitchNetwork } from 'wagmi'
+import { useAccount, useConnect, useDisconnect, useSwitchNetwork } from 'wagmi'
 
+import { walletConnectConnector } from '../../../connectors'
 import { chainNames } from '../../../constants'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { useOrderPlacementState } from '../../../state/orderPlacement/hooks'
@@ -118,10 +119,12 @@ const ErrorText = styled.span`
 
 export const Component: React.FC<RouteComponentProps> = (props) => {
   const { location, ...restProps } = props
-  const { isConnected } = useAccount()
+  const { connector, isConnected } = useAccount()
   const { chainId } = useOrderPlacementState()
+  const { disconnectAsync } = useDisconnect()
+  const { connectAsync } = useConnect()
   const { errorWrongNetwork } = useNetworkCheck()
-  const { switchNetwork } = useSwitchNetwork()
+  const { switchNetworkAsync } = useSwitchNetwork()
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false)
   const toggleWalletModal = useWalletModalToggle()
 
@@ -147,8 +150,12 @@ export const Component: React.FC<RouteComponentProps> = (props) => {
     [errorWrongNetwork, isAuctionPage],
   )
   const trySwitchingNetworks = useCallback(async (): Promise<void> => {
-    if (switchNetwork && chainId && chainMismatch) switchNetwork(chainId)
-  }, [switchNetwork, chainId, chainMismatch])
+    if (switchNetworkAsync && chainId && chainMismatch)
+      switchNetworkAsync(chainId).catch(() => {
+        localStorage.removeItem('walletconnect')
+        disconnectAsync().then(() => connectAsync({ connector, chainId }))
+      })
+  }, [switchNetworkAsync, disconnectAsync, connectAsync, connector, chainId, chainMismatch])
 
   React.useEffect(() => {
     trySwitchingNetworks()

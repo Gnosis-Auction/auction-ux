@@ -21,9 +21,11 @@ import {
 import { INFURA_KEY, PORTIS_ID, WALLET_CONNECT_PROJECT_ID } from '../constants/config'
 
 const { chains, provider } = configureChains(
-  [polygonMumbai, gnosis, goerli, mainnet, polygon],
+  [mainnet, polygonMumbai, gnosis, goerli, polygon],
   [infuraProvider({ apiKey: INFURA_KEY }), publicProvider()],
 )
+
+export { chains }
 
 const metamaskConnector = new MetaMaskConnector({ chains })
 export const injected = new InjectedConnector({ chains })

@@ -145,7 +145,7 @@ const WalletModal: React.FC = () => {
       if (connector.id === 'walletConnect') {
         toggleWalletModal()
       }
-      await connect({ connector })
+      await connect({ connector, chainId })
     } catch (error) {
       setPendingError(true)
     }
