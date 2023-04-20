@@ -27,7 +27,7 @@ export function useInterestingAuctionInfo(
           params?.closedAuctions,
         )
         if (cancelled) return
-        setMostInterestingAuctions(auctionInfo)
+        setMostInterestingAuctions(auctionInfo.filter((auction) => auction.auctionId !== 480))
       } catch (error) {
         if (cancelled) return
         setMostInterestingAuctions(null)
