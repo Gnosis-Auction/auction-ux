@@ -9,10 +9,9 @@ const logger = getLogger('TokenLogosServiceApi')
 const TOKEN_LIST_RESOURCES = [
   'https://raw.githubusercontent.com/ribbon-finance/ribbon-token-list/82c7808f7b0322b2ba8807d7dc88c2db7fb9971a/ribbon.tokenlist.json',
   'https://tokens.coingecko.com/uniswap/all.json',
-  'https://tokens.1inch.eth.link',
-  'https://bafybeih3zii2hukln4enn2qiacqeb4jgvqescxpbudxhpvtfiex4cjpgce.ipfs.dweb.link/',
-  'https://raw.githubusercontent.com/gnosis/ido-contracts/master/assets/tokens/goerli-token-list.json',
-  'https://tokens.honeyswap.org',
+  'https://wispy-bird-88a7.uniswap.workers.dev/?url=http://tokens.1inch.eth.link',
+  'https://bafybeidicqb7n62zz2duqqafal3dg7k725kaf4g2j7f5mqhviavo3sgi2q.ipfs.dweb.link/',
+  'https://raw.githubusercontent.com/Gnosis-Builders/ido-contracts/master/assets/tokens/goerli-token-list.json',
 ]
 const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
 

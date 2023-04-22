@@ -16,6 +16,10 @@ export const GRAPH_API_URL_DEVELOP_XDAI = process.env.REACT_APP_GRAPH_API_URL_XD
 export const GRAPH_API_URL_PRODUCTION_XDAI = process.env.REACT_APP_GRAPH_API_URL_XDAI
 export const GRAPH_API_URL_DEVELOP_MUMBAI = process.env.REACT_APP_GRAPH_API_URL_MUMBAI
 export const GRAPH_API_URL_PRODUCTION_MUMBAI = process.env.REACT_APP_GRAPH_API_URL_MUMBAI
+export const GRAPH_API_URL_DEVELOP_AVALANCHE = process.env.REACT_APP_GRAPH_API_URL_AVALANCHE
+export const GRAPH_API_URL_PRODUCTION_AVALANCHE = process.env.REACT_APP_GRAPH_API_URL_AVALANCHE
+export const GRAPH_API_URL_DEVELOP_FUJI = process.env.REACT_APP_GRAPH_API_URL_FUJI
+export const GRAPH_API_URL_PRODUCTION_FUJI = process.env.REACT_APP_GRAPH_API_URL_FUJI
 
 // Infura bridges like 'https://mainnet.infura.io/v3/...'
 export const NETWORK_URL_GOERLI = process.env.REACT_APP_NETWORK_URL_GOERLI || ''
@@ -26,6 +30,10 @@ export const NETWORK_URL_XDAI =
   process.env.REACT_APP_NETWORK_URL_XDAI || 'https://rpc.xdaichain.com/'
 export const NETWORK_URL_MUMBAI =
   process.env.REACT_APP_NETWORK_URL_MUMBAI || 'https://rpc-mumbai.maticvigil.com/'
+export const NETWORK_URL_AVALANCHE =
+  process.env.REACT_APP_NETWORK_URL_AVALANCHE || 'https://rpc.ankr.com/avalanche'
+export const NETWORK_URL_FUJI =
+  process.env.REACT_APP_NETWORK_URL_FUJI || 'https://rpc.ankr.com/avalanche_fuji'
 
 export const INFURA_KEY = process.env.REACT_APP_INFURA_PROJECT_KEY || ''
 export const WALLET_CONNECT_PROJECT_ID = process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || ''

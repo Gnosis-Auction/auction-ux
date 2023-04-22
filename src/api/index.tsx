@@ -5,11 +5,15 @@ import {
 } from './AdditionalServicesApi'
 import { TokenLogosServiceApi, TokenLogosServiceApiInterface } from './TokenLogosServiceApi'
 import {
+  GRAPH_API_URL_DEVELOP_AVALANCHE,
+  GRAPH_API_URL_DEVELOP_FUJI,
   GRAPH_API_URL_DEVELOP_GOERLI,
   GRAPH_API_URL_DEVELOP_MAINNET,
   GRAPH_API_URL_DEVELOP_MUMBAI,
   GRAPH_API_URL_DEVELOP_POLYGON,
   GRAPH_API_URL_DEVELOP_XDAI,
+  GRAPH_API_URL_PRODUCTION_AVALANCHE,
+  GRAPH_API_URL_PRODUCTION_FUJI,
   GRAPH_API_URL_PRODUCTION_GOERLI,
   GRAPH_API_URL_PRODUCTION_MAINNET,
   GRAPH_API_URL_PRODUCTION_MUMBAI,
@@ -34,6 +38,11 @@ function createAdditionalServiceApi(): AdditionalServicesApi {
       graph_url_production: GRAPH_API_URL_PRODUCTION_POLYGON,
       graph_url_develop: GRAPH_API_URL_DEVELOP_POLYGON,
     },
+    {
+      networkId: 43114,
+      graph_url_production: GRAPH_API_URL_PRODUCTION_AVALANCHE,
+      graph_url_develop: GRAPH_API_URL_DEVELOP_AVALANCHE,
+    },
   ]
   if (GRAPH_API_URL_DEVELOP_GOERLI)
     config.push({
@@ -46,6 +55,12 @@ function createAdditionalServiceApi(): AdditionalServicesApi {
       networkId: 80001,
       graph_url_production: GRAPH_API_URL_PRODUCTION_MUMBAI,
       graph_url_develop: GRAPH_API_URL_DEVELOP_MUMBAI,
+    })
+  if (GRAPH_API_URL_DEVELOP_FUJI)
+    config.push({
+      networkId: 43113,
+      graph_url_production: GRAPH_API_URL_PRODUCTION_FUJI,
+      graph_url_develop: GRAPH_API_URL_DEVELOP_FUJI,
     })
   const dexPriceEstimatorApi = new AdditionalServicesApiImpl(config)
 

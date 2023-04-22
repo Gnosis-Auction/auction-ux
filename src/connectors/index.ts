@@ -12,6 +12,8 @@ import { publicProvider } from 'wagmi/providers/public'
 import {
   ChainId,
   NETWORK_CONFIGS,
+  avalanche,
+  avalancheFuji,
   gnosis,
   goerli,
   mainnet,
@@ -21,7 +23,7 @@ import {
 import { INFURA_KEY, PORTIS_ID, WALLET_CONNECT_PROJECT_ID } from '../constants/config'
 
 const { chains, provider } = configureChains(
-  [mainnet, polygonMumbai, gnosis, goerli, polygon],
+  [mainnet, polygonMumbai, gnosis, goerli, polygon, avalanche, avalancheFuji],
   [infuraProvider({ apiKey: INFURA_KEY }), publicProvider()],
 )
 

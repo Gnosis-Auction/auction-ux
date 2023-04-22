@@ -15,6 +15,8 @@ export const chainNames = {
   100: 'Gnosis',
   137: 'Polygon',
   80001: 'Mumbai',
+  43114: 'Avalanche',
+  43113: 'Fuji',
 }
 
 export const explorerNames = {
@@ -23,6 +25,8 @@ export const explorerNames = {
   100: 'Blockscout',
   137: 'Polyscan',
   80001: 'Polygscan',
+  43114: 'Snowtrace',
+  43113: 'Snowtrace',
 }
 
 export const unwrapMessage = {
@@ -31,6 +35,8 @@ export const unwrapMessage = {
   100: `Unwrap WXDAI to XDAI on Honeyswap`,
   137: `Unwrap WMATIC to MATIC on Quickswap`,
   80001: `Unwrap WMATIC to MATIC on Quickswap`,
+  43114: `Unwrap WAVAX to AVAX on Quickswap`,
+  43113: `Unwrap WAVAX to AVAX on Quickswap`,
 }
 
 const MAINNET_WALLETS = {

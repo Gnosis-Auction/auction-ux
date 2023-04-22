@@ -3,6 +3,9 @@ import styled from 'styled-components'
 
 import { HashLink } from 'react-router-hash-link'
 
+// import BestPriceDiscovery from './img/BestPriceDiscovery.png'
+// import EasyToUse from './img/EasyToUse.png'
+// import FairAndResistant from './img/FairAndResistant.png'
 import AuctionsIcon from './img/eth.svg'
 import { FeaturedAuctions } from '../../components/auctions/FeaturedAuctions'
 import HighestVolumeAuctions from '../../components/auctions/HighestVolumeAuctions'
