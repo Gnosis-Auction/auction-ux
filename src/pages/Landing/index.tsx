@@ -3,17 +3,14 @@ import styled from 'styled-components'
 
 import { HashLink } from 'react-router-hash-link'
 
-// import BestPriceDiscovery from './img/BestPriceDiscovery.png'
-// import EasyToUse from './img/EasyToUse.png'
-// import FairAndResistant from './img/FairAndResistant.png'
+import BestPriceDiscovery from './img/BestPriceDiscovery.png'
+import EasyToUse from './img/EasyToUse.png'
+import FairAndResistant from './img/FairAndResistant.png'
 import AuctionsIcon from './img/eth.svg'
 import { FeaturedAuctions } from '../../components/auctions/FeaturedAuctions'
 import HighestVolumeAuctions from '../../components/auctions/HighestVolumeAuctions'
 import { ButtonCSS } from '../../components/buttons/buttonStylingTypes'
 import { Send } from '../../components/icons/Send'
-import { ShapeIcon1 } from '../../components/icons/ShapeIcon1'
-import { ShapeIcon2 } from '../../components/icons/ShapeIcon2'
-import { ShapeIcon3 } from '../../components/icons/ShapeIcon3'
 import { useAllAuctionInfo } from '../../hooks/useAllAuctionInfos'
 import { useInterestingAuctionInfo } from '../../hooks/useInterestingAuctionDetails'
 import { useSetNoDefaultNetworkId } from '../../state/orderPlacement/hooks'
@@ -242,12 +239,12 @@ export const Landing: React.FC = () => {
           </Text>
         </TextBlock>
         <ImageBlock align="right">
-          <ShapeIcon1 />
+          <img src={BestPriceDiscovery} style={{ width: 234, height: 234 }} />
         </ImageBlock>
       </BlockGrid>
       <BlockGrid>
         <ImageBlock align="left">
-          <ShapeIcon2 />
+          <img src={FairAndResistant} style={{ width: 234, height: 234 }} />
         </ImageBlock>
         <TextBlock>
           <SubTitle>Fair And Resistant</SubTitle>
@@ -267,7 +264,7 @@ export const Landing: React.FC = () => {
           </Text>
         </TextBlock>
         <ImageBlock align="right">
-          <ShapeIcon3 />
+          <img src={EasyToUse} style={{ width: 234, height: 234 }} />
         </ImageBlock>
       </BlockGrid>
       <ButtonWrapper>
