@@ -36,14 +36,14 @@ Additionally, Auctioneers can further customize the auction by using the followi
 
 ### Example
 
-In order to participate as an auctioneer, it is currently needed to copy the following [repository](https://github.com/gnosis/ido-contracts).
+In order to participate as an auctioneer, it is currently needed to copy the following [repository](https://github.com/Gnosis-Auction/auction-contracts).
 
 First install all dependencies, and switch the right folder by using the following commands:
 
 ```
-git clone https://github.com/gnosis/ido-contracts
+git clone https://github.com/Gnosis-Auction/auction-contracts.git
 
-cd ido-contracts
+cd auction-contracts
 
 yarn
 
@@ -80,11 +80,11 @@ Example of final command to initiate the auction:
 yarn hardhat initiateAuction --auctioning-token "0xc778417e063141139fce010982780140aa0cd5a" --bidding-token "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa" --sell-amount 0.1 --min-buy-amount 50 --auction-end-date 1616497200 --network goerli
 ```
 
-An example of a more complex auction with allow-listing would be:
+<!-- An example of a more complex auction with allow-listing would be:
 
 ```
 yarn hardhat initiateAuction --auctioning-token "0xc778417e063141139fce010982780140aa0cd5ab" --bidding-token "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea" --sell-amount 0.5 --min-buy-amount 800 --auction-end-date 1619195139 --order-cancellation-end-date 1619195139 --allow-list-manager "0x80b8AcA4689EC911F048c4E0976892cCDE14031E" --allow-list-data "0x000000000000000000000000740a98f8f4fae0986fb3264fe4aacf94ac1ee96f"  --network goerli
-```
+``` -->
 
 ### Closing an auction
 
