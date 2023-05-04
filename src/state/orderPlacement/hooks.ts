@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { BigNumber } from '@ethersproject/bignumber'
-import { Contract } from '@ethersproject/contracts'
 import { parseUnits } from '@ethersproject/units'
 import { ChainId, Fraction, JSBI, Token, TokenAmount } from '@josojo/honeyswap-sdk'
 import { useDispatch, useSelector } from 'react-redux'
-import { useContract, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
 
 import {
   invertPrice,
@@ -24,7 +23,7 @@ import { useTokenByAddressAndAutomaticallyAdd } from '../../hooks/Tokens'
 import { AuctionInfoDetail, useAuctionDetails } from '../../hooks/useAuctionDetails'
 import { ClaimState } from '../../hooks/useClaimOrderCallback'
 import { useClearingPriceInfo } from '../../hooks/useCurrentClearingOrderAndVolumeCallback'
-import { EASY_AUCTION_NETWORKS, getFullTokenDisplay, isTimeout } from '../../utils'
+import { getEasyAuctionAddress, getFullTokenDisplay, isTimeout } from '../../utils'
 import { getLogger } from '../../utils/logger'
 import { convertPriceIntoBuyAndSellAmount, getInverse } from '../../utils/prices'
 import { calculateTimeLeft } from '../../utils/tools'
@@ -595,19 +594,13 @@ export function useOnChainAuctionData(auctionIdentifier: AuctionIdentifier): {
 } {
   const { auctionId, chainId } = auctionIdentifier
 
-  const easyAuctionInstance: Maybe<Contract> = useContract({
-    // @ts-ignore
-    address: EASY_AUCTION_NETWORKS[chainId],
-    abi: easyAuctionABI,
-  })
-
   const { data: auctionInfo, isLoading: isLoadingAuctionInfo } = useContractRead<
     typeof easyAuctionABI,
     'auctionData',
     AuctionDataResult
   >({
     // @ts-ignore
-    address: easyAuctionInstance?.address,
+    address: getEasyAuctionAddress(chainId),
     abi: easyAuctionABI,
     functionName: 'auctionData',
     args: [auctionId],

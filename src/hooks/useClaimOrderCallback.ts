@@ -298,7 +298,7 @@ export function useGetClaimState(
     // @ts-ignore
     address: getEasyAuctionAddress(chainId as ChainId),
     abi: EASY_AUCTION_ABI,
-    enabled: !!account || !!claimableOrders || !!claimableOrders?.length,
+    enabled: !!account || !claimableOrders?.[0],
     functionName: 'containsOrder',
     args: [auctionId, claimableOrders?.[0]],
   })
@@ -306,14 +306,14 @@ export function useGetClaimState(
   useEffect(() => {
     let cancelled = false
 
-    if (!claimableOrders || hasAvailableClaim === undefined) return
+    if (!claimableOrders) return
 
     if (claimableOrders.length === 0) {
       setClaimStatus(ClaimState.NOT_APPLICABLE)
       return
     }
 
-    if (!cancelled) {
+    if (!cancelled && hasAvailableClaim !== undefined) {
       setClaimStatus(
         hasAvailableClaim
           ? pendingClaim

@@ -79,7 +79,7 @@ query DetailsOfMostInterestingClosedAuctions($currentTimeStamp: BigInt, $count: 
 
 export const GET_ALL_AUCTION_DETAILS = `
 query AllAuctionDetails {
-    auctionDetails(orderBy: auctionId) {
+    auctionDetails(orderBy: auctionId, orderDirection: desc) {
       id
       chainId
       addressAuctioningToken

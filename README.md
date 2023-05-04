@@ -1,5 +1,10 @@
 # Gnosis Auction Front-end
 
+## Contents
+  * [Development](#development)
+  * [Links](#links)
+  * [License and origin](#license-and-origin)
+
 ## Development
 
 ### Install Dependencies
@@ -22,31 +27,22 @@ To have the frontend default to a different network, make a copy of `.env` named
 change `REACT_APP_NETWORK_ID` to `{yourNetworkId}`, and change `REACT_APP_NETWORK_URL` to e.g.
 `https://{yourNetwork}.infura.io/v3/{yourKey}`.
 
-## Connect to additional - local services api
+## Links
+* [Auction Main Site](https://gnosis-auction.eth.limo/#/start)
+* [Private Auction Signer](https://github.com/Gnosis-Auction/private-auction-signer)
+* [Auction Contracts](https://github.com/Gnosis-Auction/auction-contracts)
+* [Auction Subgraph](https://github.com/Gnosis-Auction/auction-graph)
+* [Initiate Auction Code](https://github.com/Gnosis-Auction/initiate-auction-ux)
 
-Checkout the repo gnosis/ido-services - note that this is private repo - and run the orderbook service with
+### Subgraph Query URLs
+* [Mainnet](https://api.thegraph.com/subgraphs/name/aireshbhat/gnosisauctionservices)
+* [Goerli](https://api.thegraph.com/subgraphs/name/gnosis-auction/ga-goerli)
+* [Gnosis](https://api.thegraph.com/subgraphs/name/aireshbhat/gnosisauction)
+* [Polygon](https://api.thegraph.com/subgraphs/name/aireshbhat/gnosisauctionpolygon)
+* [Mumbai](https://api.thegraph.com/subgraphs/name/aireshbhat/gnosisauctionmumbai)
+* [Avax](https://api.thegraph.com/subgraphs/name/gnosis-auction/ga-avax)
+* [Fuji](https://api.thegraph.com/subgraphs/name/gnosis-auction/ga-fuji)
 
-```rust
-cargo run --bin orderbook.
-```
-
-This will start the necessary backend end points for a smooth development. Then set the env variable:
-
-```bash
-REACT_APP_ADDITIONAL_SERVICES_API_URL=http://127.0.0.1:8080/
-```
-
-in the .env or .env.local file to the connect to the local api.
-
-## Connect to additional - development services api
-
-Set the env variable:
-
-```bash
-REACT_APP_ADDITIONAL_SERVICES_API_URL=https://ido-v1-api-goerli.dev.gnosisdev.com/
-```
-
-in the .env.local file to the connect to the development api
 
 ## License and origin
 
@@ -57,7 +53,5 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 The project is a fork of the uniswap front-end from the following [commit](https://github.com/Uniswap/uniswap-interface/commit/dc391d1bea58c129f34c3777a80e2d7eebd7b349).
 
 Copyright © 2021, Gnosis limited.
-
-Copyright © 2020, [Uniswap](https://uniswap.org/).
 
 Released under GNU General Public License v3.0
