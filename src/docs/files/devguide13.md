@@ -6,8 +6,8 @@ ANY participant can settle the auction by running the following commands:
 First, one needs to clone and prepare the repo:
 
 ```
-git clone https://github.com/gnosis/ido-contracts
-cd ido-contracts
+git clone https://github.com/Gnosis-Auction/auction-contracts.git
+cd auction-contracts
 yarn
 yarn build
 ```
