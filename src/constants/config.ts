@@ -20,6 +20,10 @@ export const GRAPH_API_URL_DEVELOP_AVALANCHE = process.env.REACT_APP_GRAPH_API_U
 export const GRAPH_API_URL_PRODUCTION_AVALANCHE = process.env.REACT_APP_GRAPH_API_URL_AVALANCHE
 export const GRAPH_API_URL_DEVELOP_FUJI = process.env.REACT_APP_GRAPH_API_URL_FUJI
 export const GRAPH_API_URL_PRODUCTION_FUJI = process.env.REACT_APP_GRAPH_API_URL_FUJI
+export const GRAPH_API_URL_DEVELOP_BSC = process.env.REACT_APP_GRAPH_API_URL_BSC
+export const GRAPH_API_URL_PRODUCTION_BSC = process.env.REACT_APP_GRAPH_API_URL_BSC
+export const GRAPH_API_URL_DEVELOP_BSC_TESTNET = process.env.REACT_APP_GRAPH_API_URL_BSC_TESTNET
+export const GRAPH_API_URL_PRODUCTION_BSC_TESTNET = process.env.REACT_APP_GRAPH_API_URL_BSC_TESTNET
 
 // Infura bridges like 'https://mainnet.infura.io/v3/...'
 export const NETWORK_URL_GOERLI = process.env.REACT_APP_NETWORK_URL_GOERLI || ''
@@ -34,6 +38,10 @@ export const NETWORK_URL_AVALANCHE =
   process.env.REACT_APP_NETWORK_URL_AVALANCHE || 'https://rpc.ankr.com/avalanche'
 export const NETWORK_URL_FUJI =
   process.env.REACT_APP_NETWORK_URL_FUJI || 'https://rpc.ankr.com/avalanche_fuji'
+export const NETWORK_URL_BSC =
+  process.env.REACT_APP_NETWORK_URL_BSC || 'https://bsc-dataseed.binance.org/'
+export const NETWORK_URL_BSC_TESTNET =
+  process.env.REACT_APP_NETWORK_URL_BSC_TESTNET || 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 
 export const INFURA_KEY = process.env.REACT_APP_INFURA_PROJECT_KEY || ''
 export const WALLET_CONNECT_PROJECT_ID = process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID || ''
@@ -55,6 +63,8 @@ export const NUMBER_OF_DIGITS_FOR_INVERSION = 6
 
 export const PINATA_BASE_URL = 'https://api.pinata.cloud/'
 export const PINATA_QUERY_URL = 'https://gateway.pinata.cloud/ipfs/'
+
+export const isDev = process.env.NODE_ENV === 'development'
 
 export const STABLE_TOKENS_FOR_INVERTED_CHARTS = [
   '0x6B175474E89094C44Da98b954EedeAC495271d0F',

@@ -12,6 +12,8 @@ import { injected, portis, walletConnectConnector } from '../connectors'
 export const chainNames = {
   1: 'Mainnet',
   5: 'Goerli',
+  56: 'Binance Smart Chain',
+  97: 'Binance Smart Chain Testnet',
   100: 'Gnosis',
   137: 'Polygon',
   80001: 'Mumbai',
@@ -22,6 +24,8 @@ export const chainNames = {
 export const explorerNames = {
   1: 'Etherscan',
   5: 'Etherscan',
+  56: 'Bscscan',
+  97: 'Bscscan',
   100: 'Blockscout',
   137: 'Polyscan',
   80001: 'Polygscan',
@@ -32,6 +36,8 @@ export const explorerNames = {
 export const unwrapMessage = {
   1: `Unwrap WETH to ETH on Uniswap`,
   5: `Unwrap WETH to ETH on Uniswap`,
+  56: `Unwrap WBNB to BNB on Pancakeswap`,
+  97: `Unwrap WBNB to BNB on Pancakeswap`,
   100: `Unwrap WXDAI to XDAI on Honeyswap`,
   137: `Unwrap WMATIC to MATIC on Quickswap`,
   80001: `Unwrap WMATIC to MATIC on Quickswap`,
