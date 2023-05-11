@@ -6,6 +6,8 @@ import {
 import { TokenLogosServiceApi, TokenLogosServiceApiInterface } from './TokenLogosServiceApi'
 import {
   GRAPH_API_URL_DEVELOP_AVALANCHE,
+  GRAPH_API_URL_DEVELOP_BSC,
+  GRAPH_API_URL_DEVELOP_BSC_TESTNET,
   GRAPH_API_URL_DEVELOP_FUJI,
   GRAPH_API_URL_DEVELOP_GOERLI,
   GRAPH_API_URL_DEVELOP_MAINNET,
@@ -13,12 +15,15 @@ import {
   GRAPH_API_URL_DEVELOP_POLYGON,
   GRAPH_API_URL_DEVELOP_XDAI,
   GRAPH_API_URL_PRODUCTION_AVALANCHE,
+  GRAPH_API_URL_PRODUCTION_BSC,
+  GRAPH_API_URL_PRODUCTION_BSC_TESTNET,
   GRAPH_API_URL_PRODUCTION_FUJI,
   GRAPH_API_URL_PRODUCTION_GOERLI,
   GRAPH_API_URL_PRODUCTION_MAINNET,
   GRAPH_API_URL_PRODUCTION_MUMBAI,
   GRAPH_API_URL_PRODUCTION_POLYGON,
   GRAPH_API_URL_PRODUCTION_XDAI,
+  isDev,
 } from '../constants/config'
 
 function createAdditionalServiceApi(): AdditionalServicesApi {
@@ -43,8 +48,13 @@ function createAdditionalServiceApi(): AdditionalServicesApi {
       graph_url_production: GRAPH_API_URL_PRODUCTION_AVALANCHE,
       graph_url_develop: GRAPH_API_URL_DEVELOP_AVALANCHE,
     },
+    {
+      networkId: 56,
+      graph_url_production: GRAPH_API_URL_PRODUCTION_BSC,
+      graph_url_develop: GRAPH_API_URL_DEVELOP_BSC,
+    },
   ]
-  if (GRAPH_API_URL_DEVELOP_GOERLI)
+  if (isDev && GRAPH_API_URL_DEVELOP_GOERLI)
     config.push({
       networkId: 5,
       graph_url_production: GRAPH_API_URL_PRODUCTION_GOERLI,
@@ -56,12 +66,19 @@ function createAdditionalServiceApi(): AdditionalServicesApi {
       graph_url_production: GRAPH_API_URL_PRODUCTION_MUMBAI,
       graph_url_develop: GRAPH_API_URL_DEVELOP_MUMBAI,
     })
-  if (GRAPH_API_URL_DEVELOP_FUJI)
+  if (isDev && GRAPH_API_URL_DEVELOP_FUJI)
     config.push({
       networkId: 43113,
       graph_url_production: GRAPH_API_URL_PRODUCTION_FUJI,
       graph_url_develop: GRAPH_API_URL_DEVELOP_FUJI,
     })
+  if (isDev && GRAPH_API_URL_DEVELOP_BSC_TESTNET) {
+    config.push({
+      networkId: 97,
+      graph_url_production: GRAPH_API_URL_PRODUCTION_BSC_TESTNET,
+      graph_url_develop: GRAPH_API_URL_DEVELOP_BSC_TESTNET,
+    })
+  }
   const dexPriceEstimatorApi = new AdditionalServicesApiImpl(config)
 
   window['dexPriceEstimatorApi'] = dexPriceEstimatorApi

@@ -2,6 +2,8 @@ import {
   Chain,
   avalanche,
   avalancheFuji,
+  bsc,
+  bscTestnet,
   gnosis,
   goerli,
   mainnet,
@@ -15,6 +17,8 @@ export type { Chain }
 export enum ChainId {
   MAINNET = 1,
   GÖRLI = 5,
+  BSC = 56,
+  BSCTESTNET = 97,
   XDAI = 100,
   MATIC = 137,
   MUMBAI = 80001,
@@ -30,6 +34,8 @@ export const NETWORK_CONFIGS: {
   [gnosis.id]: gnosis,
   [polygon.id]: polygon,
   [polygonMumbai.id]: polygonMumbai,
+  [bsc.id]: bsc,
+  [bscTestnet.id]: bscTestnet,
   [avalanche.id]: avalanche,
   [avalancheFuji.id]: avalancheFuji,
 }
