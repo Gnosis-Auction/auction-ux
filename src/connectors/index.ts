@@ -1,4 +1,3 @@
-import { WalletConnectConnector } from '@anxolin/walletconnect-connector'
 import { PortisConnector } from '@web3-react/portis-connector'
 import { configureChains, createClient } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -71,8 +70,6 @@ export const wagmiClient = createClient({
   provider,
 })
 
-const POLLING_INTERVAL = 10000
-
 const urls: string[] = []
 
 // TOOD Try to use reduce to improve types
@@ -85,42 +82,6 @@ chainIds.forEach((chainId: ChainId) => {
     rpcs[chainId] = NETWORK_CONFIGS[chainId].rpcUrls.default.http
   }
 })
-
-export const walletconnect = {
-  1: new WalletConnectConnector({
-    rpc: { 1: `${NETWORK_CONFIGS[1].rpcUrls.default.http}` },
-    bridge: 'https://safe-walletconnect.gnosis.io',
-    qrcode: true,
-    pollingInterval: POLLING_INTERVAL,
-  }),
-  100: new WalletConnectConnector({
-    rpc: { 100: `${NETWORK_CONFIGS[100].rpcUrls.default.http}` },
-    bridge: 'https://safe-walletconnect.gnosis.io',
-    qrcode: true,
-    pollingInterval: POLLING_INTERVAL,
-  }),
-  137: new WalletConnectConnector({
-    rpc: { 137: `${NETWORK_CONFIGS[137].rpcUrls.default.http}` },
-    bridge: 'https://safe-walletconnect.gnosis.io',
-    qrcode: true,
-    pollingInterval: POLLING_INTERVAL,
-  }),
-  5: new WalletConnectConnector({
-    rpc: { 5: `${NETWORK_CONFIGS[5].rpcUrls.default.http}` },
-    bridge: 'https://safe-walletconnect.gnosis.io',
-    qrcode: true,
-    pollingInterval: POLLING_INTERVAL,
-  }),
-  // if no network is defined, we look whether wallet connect supports all possible chains
-  // this might cause issues on the auction overview page.
-  // A solution for this usecase should be a network selector
-  undefined: new WalletConnectConnector({
-    rpc: rpcs,
-    bridge: 'https://safe-walletconnect.gnosis.io',
-    qrcode: true,
-    pollingInterval: POLLING_INTERVAL,
-  }),
-}
 
 // mainnet only
 export const portis = new PortisConnector({
