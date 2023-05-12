@@ -34,5 +34,7 @@ export const ALL_TOKENS: AllTokens = [
       [ChainId.MUMBAI]: {},
       [ChainId.AVALANCHE]: {},
       [ChainId.FUJI]: {},
+      [ChainId.BSC]: {},
+      [ChainId.BSCTESTNET]: {},
     },
   )

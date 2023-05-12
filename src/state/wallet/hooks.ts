@@ -4,51 +4,9 @@ import { ChainId, JSBI, Token, TokenAmount, WETH } from '@josojo/honeyswap-sdk'
 import { useBalance, useContractReads } from 'wagmi'
 
 import ERC20_ABI from '../../constants/abis/erc20.json'
-import { MULTICALL_ABI } from '../../constants/multicall'
 import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens } from '../../hooks/Tokens'
-import { useMulticallContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
-
-/**
- * Returns a map of the given addresses to their eventually consistent ETH balances.
- */
-export function useETHBalances(uncheckedAddresses?: (string | undefined)[]): {
-  [address: string]: JSBI | undefined
-} {
-  const multicallContract = useMulticallContract()
-
-  const addresses: string[] = useMemo(
-    () =>
-      uncheckedAddresses
-        ? uncheckedAddresses
-            .map(isAddress)
-            .filter((a): a is string => a !== false)
-            .sort()
-        : [],
-    [uncheckedAddresses],
-  )
-
-  const { data: results } = useContractReads({
-    // @ts-ignore
-    contracts: [...addresses].map((address) => ({
-      address: multicallContract?.address,
-      abi: MULTICALL_ABI,
-      functionName: 'getEthBalance',
-      functionParams: [address],
-    })),
-  })
-
-  return useMemo(
-    () =>
-      addresses.reduce<{ [address: string]: JSBI | undefined }>((memo, address, i) => {
-        const value = results?.[i]
-        if (value) memo[address] = JSBI.BigInt(value.toString())
-        return memo
-      }, {}),
-    [addresses, results],
-  )
-}
 
 /**
  * Returns a map of token addresses to their eventually consistent token balances for a single account.
