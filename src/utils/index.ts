@@ -37,6 +37,8 @@ export const EASY_AUCTION_NETWORKS: { [chainId in ChainId]: string } = {
   [ChainId.MUMBAI]: '0x4100aF1E6e8bBc174fc5da4D409e1e3C03F1f85E',
   [ChainId.AVALANCHE]: '0xb5D00F83680ea5E078e911995c64b43Fbfd1eE61',
   [ChainId.FUJI]: '0xa5cd8D8effACB7Ad861e3797404924199D1463a5',
+  [ChainId.BSC]: '0x231F3Fd7c3E3C9a2c8A03B72132c31241DF0a26C',
+  [ChainId.BSCTESTNET]: '0x231F3Fd7c3E3C9a2c8A03B72132c31241DF0a26C',
 }
 
 export const DEPOSIT_AND_PLACE_ORDER: { [chainId in ChainId]: string } = {
@@ -47,6 +49,8 @@ export const DEPOSIT_AND_PLACE_ORDER: { [chainId in ChainId]: string } = {
   [ChainId.MUMBAI]: '0x7f49Ee20f2E83Ca53B08944938E9B6Fad8e3E3B6',
   [ChainId.AVALANCHE]: '0x193c8993480DF4c1dBBdB39dB07511f7D789cedb',
   [ChainId.FUJI]: '0x39cbA0cC28EE67EAa8134C0e80a061c13EBC3603',
+  [ChainId.BSC]: '0x4bAbb4b89ed7180aeF95F872f621afEE724F0344',
+  [ChainId.BSCTESTNET]: '0x14082EDeFCa073578d2C16E8fB42967bEc188E59',
 }
 
 const getExplorerPrefix = (chainId: ChainId) => {
