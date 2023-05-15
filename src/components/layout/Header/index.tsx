@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { HashLink } from 'react-router-hash-link'
@@ -116,8 +116,8 @@ const ErrorText = styled.span`
   margin-right: 8px;
 `
 
-export const Component: React.FC<RouteComponentProps> = (props) => {
-  const { location, ...restProps } = props
+export const Component: React.FC = (props) => {
+  const location = useLocation()
   const { connector, isConnected } = useAccount()
   const { chainId } = useOrderPlacementState()
   const { disconnectAsync } = useDisconnect()
@@ -162,7 +162,7 @@ export const Component: React.FC<RouteComponentProps> = (props) => {
 
   return (
     <>
-      <Wrapper className="siteHeader" {...restProps}>
+      <Wrapper className="siteHeader" {...props}>
         <Inner>
           <ButtonMenuStyled className={mobileMenuVisible && 'active'} onClick={mobileMenuToggle} />
           {mobileMenuVisible && <Mobilemenu onClose={() => setMobileMenuVisible(false)} />}
@@ -185,4 +185,4 @@ export const Component: React.FC<RouteComponentProps> = (props) => {
   )
 }
 
-export const Header = withRouter(Component)
+export const Header = Component

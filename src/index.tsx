@@ -1,6 +1,4 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { WagmiConfig } from 'wagmi'
 
@@ -25,7 +23,11 @@ const Updaters = () => {
   )
 }
 
-ReactDOM.render(
+const container = document.getElementById('root')
+
+const root = createRoot(container)
+
+root.render(
   <>
     <WagmiConfig client={wagmiClient}>
       <Provider store={store}>
@@ -38,5 +40,4 @@ ReactDOM.render(
       </Provider>
     </WagmiConfig>
   </>,
-  document.getElementById('root'),
 )
