@@ -111,33 +111,48 @@ function DropDownDocsMenu() {
           {open && (
             <DropDownList>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" exact to="/docs#topAnchor">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs#topAnchor"
+                >
                   Overview
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/batch-auctions#topAnchor">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/batch-auctions#topAnchor"
+                >
                   How do Batch Auctions work?
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/use-cases#topAnchor">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/use-cases#topAnchor"
+                >
                   Use Cases
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/user-flow#topAnchor">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/user-flow#topAnchor"
+                >
                   User flow
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/participate-as-a-bidder#topAnchor">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/participate-as-a-bidder#topAnchor"
+                >
                   Participate as a bidder
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
                 <IndexLink
-                  activeClassName="isActive"
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
                   to="/docs/participate-as-auctioneer#topAnchor"
                 >
                   Start an auction via scripts
@@ -145,39 +160,57 @@ function DropDownDocsMenu() {
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
                 <IndexLink
-                  activeClassName="isActive"
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
                   to="/docs/starting-an-auction-with-safe#topAnchor"
                 >
                   Start an auction via UI
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/settle-an-auction#topAnchor">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/settle-an-auction#topAnchor"
+                >
                   Settle an auction
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/private-auctions-and-KYC-solutions">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/private-auctions-and-KYC-solutions"
+                >
                   Private auctions/KYC solutions
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/supported-networks">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/supported-networks"
+                >
                   Supported Networks
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/vested-tokens">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/vested-tokens"
+                >
                   Vested tokens
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/media-kit">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/media-kit"
+                >
                   Media kit
                 </IndexLink>
               </DropDownListItem>
               <DropDownListItem onClick={() => handleDropDownFocus(open)}>
-                <IndexLink activeClassName="isActive" to="/docs/faq#topAnchor">
+                <IndexLink
+                  className={({ isActive }) => (isActive ? 'isActive' : '')}
+                  to="/docs/faq#topAnchor"
+                >
                   FAQ
                 </IndexLink>
               </DropDownListItem>

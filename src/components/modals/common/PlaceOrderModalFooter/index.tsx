@@ -66,7 +66,7 @@ interface Props {
   isPriceInverted?: boolean
 }
 
-const WarnMessageStyled: React.FC = ({ children }) => (
+const WarnMessageStyled: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <>
     <ErrorWrapper>
       <ErrorRowStyled>

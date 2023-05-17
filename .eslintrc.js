@@ -45,6 +45,7 @@ module.exports = {
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
     'no-console': [
       'warn',
       {

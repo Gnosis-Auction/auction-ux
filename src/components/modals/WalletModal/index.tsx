@@ -47,6 +47,12 @@ const CheckboxText = styled.span`
   }
 `
 
+const Link = styled(NavLink)`
+  &:hover {
+    text-decoration: none;
+  }
+`
+
 const Footer = styled.div`
   color: ${({ theme }) => theme.text1};
   font-size: 13px;
@@ -223,9 +229,9 @@ const WalletModal: React.FC = () => {
               <Checkbox checked={termsAccepted} />
               <CheckboxText>
                 I have read, understood and agree to the{' '}
-                <NavLink target="_blank" to="/terms-and-conditions">
+                <Link target="_blank" to="/terms-and-conditions">
                   Terms &amp; Conditions
-                </NavLink>
+                </Link>
                 .
               </CheckboxText>
             </CheckboxWrapper>

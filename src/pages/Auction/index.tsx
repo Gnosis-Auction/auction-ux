@@ -1,5 +1,5 @@
 import React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 import AuctionBody from '../../components/auction/AuctionBody'
@@ -64,16 +64,14 @@ const NetworkName = styled.span`
   text-transform: capitalize;
 `
 
-interface Props extends RouteComponentProps {
+interface Props {
   showTokenWarning: (bothTokensSupported: boolean) => void
 }
 
 const Auction: React.FC<Props> = (props) => {
-  const {
-    history,
-    location: { search },
-    showTokenWarning,
-  } = props
+  const { search } = useLocation()
+  const navigate = useNavigate()
+  const { showTokenWarning } = props
 
   const auctionIdentifier = parseURL(search)
   const derivedAuctionInfo = useDerivedAuctionInfo(auctionIdentifier)
@@ -155,7 +153,7 @@ const Auction: React.FC<Props> = (props) => {
           <WarningModal
             content={`This auction doesn't exist or it hasn't started yet.`}
             isOpen
-            onDismiss={() => history.push('/overview')}
+            onDismiss={() => navigate('/overview')}
             title="Warning!"
           />
         </>
