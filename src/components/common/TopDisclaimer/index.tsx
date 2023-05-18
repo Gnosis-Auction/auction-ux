@@ -43,9 +43,10 @@ export const TopDisclaimer: React.FC = () => {
       <Inner>
         <InfoIcon />
         <Text>
-          Gnosis Auction is a permissionless platform. Anyone can start auctions, and no auction is
-          an endorsement for the token from Gnosis. Use the platform at your own risk, and make sure
-          you have conducted research before interacting with any ERC20 token.
+          Our database service will undergo maintenance on 22 May 2023 from 05:00 - 06:00 UTC. While
+          we do not expect issues, there might be slight delays with auction interactions. Use the
+          platform at your own risk, and make sure you have conducted research before interacting
+          with any ERC20 token.
         </Text>
       </Inner>
     </Wrapper>
