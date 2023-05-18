@@ -11,7 +11,17 @@ import {
   polygonMumbai,
 } from 'wagmi/chains'
 
-export { gnosis, goerli, mainnet, polygon, polygonMumbai, avalanche, avalancheFuji }
+export {
+  gnosis,
+  goerli,
+  mainnet,
+  polygon,
+  polygonMumbai,
+  avalanche,
+  avalancheFuji,
+  bsc,
+  bscTestnet,
+}
 export type { Chain }
 
 export enum ChainId {
