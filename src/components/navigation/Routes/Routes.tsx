@@ -11,6 +11,7 @@ import { Licenses } from '../../../pages/Licenses'
 import Overview from '../../../pages/Overview'
 import { Terms } from '../../../pages/Terms'
 import { CookiesBanner } from '../../common/CookiesBanner'
+import { HeaderBanner } from '../../common/HeaderBanner'
 import { TopDisclaimer } from '../../common/TopDisclaimer'
 import { Footer } from '../../layout/Footer'
 import { Header } from '../../layout/Header'
@@ -56,6 +57,7 @@ const AppRoutes: React.FC = () => {
           effect="solid"
           textColor="#fff"
         />
+        <HeaderBanner />
         {showTopWarning && <TopDisclaimer />}
         <span id="topAnchor" />
         <Inner>

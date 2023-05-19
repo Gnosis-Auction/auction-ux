@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { InfoIconDark } from '../../icons/InfoIconDark'
+import { WarningIcon } from '../../icons/WarningIcon'
 import { InnerContainer } from '../../pureStyledComponents/InnerContainer'
 
 const Wrapper = styled.div`
-  background-color: ${({ theme }) => theme.primary1};
+  background-color: ${({ theme }) => theme.primary2};
   flex-shrink: 0;
   min-height: 30px;
   padding: 5px 0;
@@ -16,15 +16,13 @@ const Inner = styled(InnerContainer)`
   flex-direction: row;
   justify-content: flex-start;
 `
-
-const InfoIcon = styled(InfoIconDark)`
+const Icon = styled(WarningIcon)`
+  height: 22px;
   flex-shrink: 0;
   position: relative;
-  top: -2px;
 `
-
 const Text = styled.div`
-  color: ${({ theme }) => theme.text3};
+  color: ${({ theme }) => theme.text2};
   font-size: 15px;
   font-weight: 700;
   hyphens: auto;
@@ -37,15 +35,14 @@ const Text = styled.div`
   word-wrap: break-word;
 `
 
-export const TopDisclaimer: React.FC = () => {
+export const HeaderBanner: React.FC = () => {
   return (
     <Wrapper>
       <Inner>
-        <InfoIcon />
+        <Icon />
         <Text>
-          Gnosis Auction is a permissionless platform. Anyone can start auctions, and no auction is
-          an endorsement for the token from Gnosis. Use the platform at your own risk, and make sure
-          you have conducted research before interacting with any ERC20 token.
+          Our database service will be under maintenance on 22 May 2023 from 05:00 - 06:00 UTC.
+          There might be slight delays with auction interactions.
         </Text>
       </Inner>
     </Wrapper>
