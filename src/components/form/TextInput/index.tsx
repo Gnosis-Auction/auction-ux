@@ -1,10 +1,18 @@
-import React from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { UseFormRegister } from 'react-hook-form'
+import { RegisterOptions, useWatch } from 'react-hook-form'
 
-import { LaunchAuctionFormValues } from '../../../pages/LaunchAuction/types'
-import FormInput from '../Input'
+import { useAuctionForm } from '../../../hooks/useAuctionForm'
+import { FormKeys } from '../../../pages/LaunchAuction/formConfig'
+
+const TextInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+`
 
 const Input = styled.input`
   width: 32em;
@@ -13,42 +21,56 @@ const Input = styled.input`
   padding: 0 0.5em;
   border-radius: 0.42rem;
   border: 1px solid ${({ theme }) => theme.text1};
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    width: 100%;
+    margin-right: 1em;
+    flex-direction: column;
+  `}
+`
+
+const Error = styled.span`
+  color: ${({ theme }) => theme.red1};
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 0.5em;
 `
 
 interface Props {
-  label: string
-  tooltip: string
+  name: FormKeys
   value?: string
   readOnly?: boolean
   placeholder?: string
+  rules?: RegisterOptions
+  triggerOnChange?: FormKeys
 }
 
-const TextInput = React.forwardRef<
-  HTMLInputElement,
-  Props & ReturnType<UseFormRegister<LaunchAuctionFormValues>>
->(({ label, name, onBlur, onChange, placeholder, readOnly, tooltip, value }, ref) => {
+export const TextInput = ({ name, placeholder, readOnly, rules = {}, triggerOnChange }: Props) => {
+  const { control, getFieldState, register, trigger } = useAuctionForm()
+
+  const { error } = getFieldState(name)
+
+  const watch = useWatch({ control, name: triggerOnChange, disabled: !triggerOnChange })
+
+  useEffect(() => {
+    trigger()
+  }, [watch, trigger])
+
   return (
-    <FormInput label={label} tooltip={tooltip}>
+    <TextInputWrapper>
       <Input
+        {...register(name, rules)}
         autoComplete="off"
         autoCorrect="off"
-        inputMode="decimal"
         maxLength={79}
         minLength={1}
-        name={name}
-        onBlur={onBlur}
-        onChange={onChange}
         placeholder={placeholder || ''}
         readOnly={readOnly}
-        ref={ref}
         spellCheck="false"
         type="text"
-        value={value}
       />
-    </FormInput>
+      {error?.message && <Error>{error?.message}</Error>}
+    </TextInputWrapper>
   )
-})
-
-TextInput.displayName = 'TextInput'
+}
 
 export default TextInput

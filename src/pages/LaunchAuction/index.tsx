@@ -1,11 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm, useWatch } from 'react-hook-form'
 
-import { LaunchAuctionFormValues } from './types'
-import DateInput from '../../components/form/DateInput'
-import TextInput from '../../components/form/TextInput'
+import { DEFAULT_FORM_PARAMS, LaunchAuctionFormValues } from './formConfig'
+import { AllowListDataInput } from '../../components/launch-auction/AllowListDataInput'
+import { AtomicClosureAllowedCheckbox } from '../../components/launch-auction/AtomicClosureAllowedSwitch'
+import { AuctionEndDate } from '../../components/launch-auction/AuctionEndDate'
+import { AuctionedSellAmountInput } from '../../components/launch-auction/AuctionedSellAmountInput'
+import { AuctioningTokenInput } from '../../components/launch-auction/AuctioningTokenInput'
+import { BiddingTokenInput } from '../../components/launch-auction/BiddingTokenInput'
+import { MinBuyAmountInput } from '../../components/launch-auction/MinBuyAmountInput'
+import { MinimumBiddingAmountPerOrderInput } from '../../components/launch-auction/MinimumBiddingAmountPerOrderInput'
+import { MinimumFundingThresholdInput } from '../../components/launch-auction/MinimumFundingThresholdInput'
+import { NetworkSelectDropdown } from '../../components/launch-auction/NetworkSelectDropdown'
+import { OrderCancellationEndDate } from '../../components/launch-auction/OrderCancellationEndDate'
+import SubmitAuction from '../../components/launch-auction/SubmitAuction'
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -41,76 +51,37 @@ const FormBody = styled.div`
 `
 
 const LaunchAuction: React.FC = () => {
-  const { getValues, register } = useForm<LaunchAuctionFormValues>()
+  const formMethods = useForm<Required<LaunchAuctionFormValues>>({
+    mode: 'all',
+    defaultValues: DEFAULT_FORM_PARAMS,
+  })
+  const { control } = formMethods
+
+  useWatch({
+    control,
+  })
 
   return (
-    <div>
+    <FormProvider {...formMethods}>
       <TitleWrapper>
         <Title>Start a new</Title>
         <AuctionTitle>Auction</AuctionTitle>
       </TitleWrapper>
       <FormBody>
-        <TextInput
-          label="Auctioning Token Address*"
-          tooltip="Enter the address of the token you want to auction."
-          value={getValues('auctioningTokenAddress')}
-          {...register('auctioningTokenAddress', {
-            required: 'Please enter the address of the auctioning token',
-          })}
-        />
-        <TextInput
-          label="Bidding Token Address*"
-          tooltip="Enter the address of the token you want in exchange for the auctioning token."
-          value={getValues('biddingTokenAddress')}
-          {...register('biddingTokenAddress', {
-            required: 'Please enter the address of the bidding token',
-          })}
-        />
-        <DateInput
-          label="Order Cancellation End Date*"
-          tooltip="The date after which orders can no longer be cancelled"
-          value={getValues('orderCancellationEndDate')}
-          {...register('orderCancellationEndDate', {
-            required: 'Please enter the date after which orders can no longer be cancelled',
-          })}
-        />
-        <TextInput
-          label="Auctioned Sell Amount*"
-          tooltip="Number of auctioning tokens you're willing to sell"
-          value={getValues('auctionedSellAmount')}
-          {...register('auctionedSellAmount', {
-            required: 'Please enter the amount of auctioning tokens you want to sell',
-          })}
-        />
-        <TextInput
-          label="Min Buy Amount*"
-          tooltip="Minimum price you're willing to accept for your auctioning tokens (in bidding tokens, price = minBuyAmount / auctionedSellAmount)"
-          value={getValues('minBuyAmount')}
-          {...register('minBuyAmount', {
-            required:
-              'Please enter the minimum price you want to accept for your auctioning tokens',
-          })}
-        />
-        <TextInput
-          label="Minimum Bidding Amount Per Order*"
-          tooltip="The minimum amount of bidding tokens you're willing to accept per order"
-          value={getValues('minimumBiddingAmountPerOrder')}
-          {...register('minimumBiddingAmountPerOrder', {
-            required:
-              'Please enter the minimum amount of bidding tokens you want to accept per order',
-          })}
-        />
-        <TextInput
-          label="Minimum Funding Threshold*"
-          tooltip="The minimum amount of bidding tokens you're willing to accept for the entire auction"
-          value={getValues('minimumFundingThreshold')}
-          {...register('minimumFundingThreshold', {
-            required:
-              'Please enter the minimum amount of bidding tokens you want to accept for the entire auction',
-          })}
-        />
+        <NetworkSelectDropdown />
+        <AuctioningTokenInput />
+        <BiddingTokenInput />
+        <OrderCancellationEndDate />
+        <AuctionEndDate />
+        <AuctionedSellAmountInput />
+        <MinBuyAmountInput />
+        <MinimumBiddingAmountPerOrderInput />
+        <MinimumFundingThresholdInput />
+        <AtomicClosureAllowedCheckbox />
+        <AllowListDataInput />
+        <SubmitAuction />
       </FormBody>
-    </div>
+    </FormProvider>
   )
 }
 
