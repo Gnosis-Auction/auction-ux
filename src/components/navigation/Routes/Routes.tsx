@@ -7,6 +7,7 @@ import ReactTooltip from 'react-tooltip'
 import Auction from '../../../pages/Auction'
 import { Documentation } from '../../../pages/Documentation'
 import { Landing } from '../../../pages/Landing'
+import LaunchAuction from '../../../pages/LaunchAuction'
 import { Licenses } from '../../../pages/Licenses'
 import Overview from '../../../pages/Overview'
 import { Terms } from '../../../pages/Terms'
@@ -66,6 +67,7 @@ const AppRoutes: React.FC = () => {
               <Route element={<Auction showTokenWarning={tokenSupport} />} path="/auction" />
               <Route element={<Overview />} path="/overview" />
               <Route element={<Landing />} path="/start" />
+              <Route element={<LaunchAuction />} path="/launch-auction" />
               <Route element={<Terms />} path="/terms-and-conditions" />
               <Route element={<Licenses />} path="/licenses" />
               <Route element={<Documentation />} path="/docs" />

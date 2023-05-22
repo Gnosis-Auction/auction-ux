@@ -27,6 +27,26 @@ To have the frontend default to a different network, make a copy of `.env` named
 change `REACT_APP_NETWORK_ID` to `{yourNetworkId}`, and change `REACT_APP_NETWORK_URL` to e.g.
 `https://{yourNetwork}.infura.io/v3/{yourKey}`.
 
+## Dev Process
+
+* Developer starts a new feature or bug fix: The developer creates a new branch off the dev branch. The branch name could be something related to the feature or bug being fixed.
+```bash
+git checkout dev
+git pull origin dev
+git checkout -b feature_branch
+```
+* Developer works on the code: The developer makes changes to the code, commits them, and then pushes the changes to the remote feature_branch.
+```bash
+git add .
+git commit -m "commit message"
+git push origin feature_branch
+```
+* Merge changes to dev branch: The changes can be merged into the dev branch. This should be done through a Pull Request (PR). Once the PR is approved, it can be merged.
+* Fleek CI/CD deploys dev to staging: Fleek is set up to automatically deploy the dev branch to a staging environment for QA testing whenever new changes are pushed to it.
+* Merge changes to main branch: Once the QA testing is done and everything is approved, the changes can be merged into the main branch. Again, this should be done through a PR for the purposes of code review.
+* Fleek CI/CD deploys main to production: Fleek is set up to automatically deploy the main branch to the production environment whenever new changes are pushed to it.
+
+
 ## Links
 * [Auction Main Site](https://gnosis-auction.eth.limo/#/start)
 * [Private Auction Signer](https://github.com/Gnosis-Auction/private-auction-signer)

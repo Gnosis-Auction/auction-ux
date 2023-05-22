@@ -1,5 +1,3 @@
-import { Signer } from 'ethers'
-
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
@@ -8,7 +6,6 @@ import { JsonRpcSigner, Provider, Web3Provider } from '@ethersproject/providers'
 import { parseBytes32String } from '@ethersproject/strings'
 import { JSBI, Percent, Token, TokenAmount, WETH } from '@josojo/honeyswap-sdk'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
-import { SiweMessage } from 'siwe'
 
 import { ChainId, NETWORK_CONFIGS } from './networkConfig'
 import easyAuctionABI from '../constants/abis/easyAuction/easyAuction.json'
@@ -231,36 +228,11 @@ export function isTimeout(timeId: NodeJS.Timeout | undefined): timeId is NodeJS.
   return typeof timeId !== 'undefined'
 }
 
-export interface AuthSig {
-  sig: string
-  derivedVia: string
-  signedMessage: string
-  address: string
-}
-
-export async function generateAuthSig(
-  signer: Signer,
-  chainId: number,
-  auctionId: number,
-): Promise<AuthSig> {
-  const address = await signer.getAddress()
-  const siweMessage = new SiweMessage({
-    domain: 'gnosisauction',
-    address: address,
-    statement: `Sign in to access bidding for auction - ${auctionId}`,
-    uri: origin,
-    version: '1',
-    chainId: chainId,
-  })
-
-  const messageToSign = siweMessage.prepareMessage()
-  const signature = await signer.signMessage(messageToSign)
-
-  const authSig = {
-    sig: signature,
-    derivedVia: 'web3.eth.personal.sign',
-    signedMessage: messageToSign,
-    address: address,
+export const checkIsContract = async (provider: Provider, address: string) => {
+  try {
+    const code = await provider.getCode(address)
+    return code !== '0x'
+  } catch (error) {
+    return false
   }
-  return authSig
 }

@@ -13,6 +13,8 @@ import {
   NETWORK_CONFIGS,
   avalanche,
   avalancheFuji,
+  bsc,
+  bscTestnet,
   gnosis,
   goerli,
   mainnet,
@@ -22,7 +24,7 @@ import {
 import { INFURA_KEY, PORTIS_ID, WALLET_CONNECT_PROJECT_ID } from '../constants/config'
 
 const { chains, provider } = configureChains(
-  [mainnet, polygonMumbai, gnosis, goerli, polygon, avalanche, avalancheFuji],
+  [mainnet, polygonMumbai, gnosis, goerli, polygon, avalanche, avalancheFuji, bsc, bscTestnet],
   [infuraProvider({ apiKey: INFURA_KEY }), publicProvider()],
 )
 
