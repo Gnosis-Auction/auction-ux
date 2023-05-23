@@ -12,11 +12,13 @@ import { Button } from '../../buttons/Button'
 
 const ActionButton = styled(Button)`
   flex-shrink: 0;
-  height: 40px;
   margin: 3em auto;
-  width: 20em;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     width: 16em;
+    margin: 3em auto;
+    word-wrap: break-word;
+    font-size: 18px;
+    white-space: normal;
   `}
 `
 
