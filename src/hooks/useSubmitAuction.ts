@@ -10,7 +10,11 @@ import { useApproveCallback } from './useApproveCallback'
 import { useAuctionForm } from './useAuctionForm'
 import EASY_AUCTION_ABI from '../constants/abis/easyAuction/easyAuction.json'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { DEPOSIT_AND_PLACE_ORDER, EASY_AUCTION_NETWORKS, getEasyAuctionAddress } from '../utils'
+import {
+  ALLOW_LIST_OFF_CHAIN_MANAGED,
+  EASY_AUCTION_NETWORKS,
+  getEasyAuctionAddress,
+} from '../utils'
 
 type ValuesToSend = [
   string,
@@ -142,7 +146,7 @@ export const useSubmitAuction = () => {
       !!isAtomicClosureAllowed,
       isWhiteListingProcessUsed
         ? // @ts-ignore
-          DEPOSIT_AND_PLACE_ORDER[chainId]
+          ALLOW_LIST_OFF_CHAIN_MANAGED[chainId]
         : '0x0000000000000000000000000000000000000000',
       isWhiteListingProcessUsed ? utils.defaultAbiCoder.encode(['address'], [allowListData]) : '0x',
     ]
