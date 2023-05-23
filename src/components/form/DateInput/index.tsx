@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import DatePicker from 'react-datepicker'
 import { Controller, RegisterOptions, useWatch } from 'react-hook-form'
+import { useMediaLayout } from 'use-media'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -74,6 +75,8 @@ const DateInput: React.FC<Props> = ({ name, rules, triggerOnChange }) => {
 
   const { error } = getFieldState(name)
 
+  const isMobile = useMediaLayout({ maxWidth: '600px' })
+
   const watch = useWatch({ control, name: triggerOnChange, disabled: !triggerOnChange })
 
   useEffect(() => {
@@ -87,7 +90,7 @@ const DateInput: React.FC<Props> = ({ name, rules, triggerOnChange }) => {
       name={name}
       render={({ field: { value } }) => (
         <DateInputWrapper>
-          <Input name={name} onChange={onDateChange} selected={value} showTimeSelect />
+          <Input name={name} onChange={onDateChange} selected={value} showTimeSelect={!isMobile} />
           <Image alt={'Icon'} src={Calendar} />
           {error?.message && <Error>{error?.message}</Error>}
         </DateInputWrapper>

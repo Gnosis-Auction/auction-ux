@@ -24,6 +24,12 @@ const DropdownPagination = styled(Dropdown)`
   `}
 `
 
+const ButtonText = styled.span`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 14px;
+  `}
+`
+
 export const NetworkSelectDropdown = () => {
   const { control } = useAuctionForm()
 
@@ -35,7 +41,9 @@ export const NetworkSelectDropdown = () => {
         return (
           <DropdownPagination
             dropdownButtonContent={
-              <ButtonSelect content={<span>{NETWORK_CONFIGS[(value as number) || 1].name}</span>} />
+              <ButtonSelect
+                content={<ButtonText>{NETWORK_CONFIGS[(value as number) || 1].name}</ButtonText>}
+              />
             }
             dropdownPosition={DropdownPosition.right}
             items={chains.map((item, index) => (
