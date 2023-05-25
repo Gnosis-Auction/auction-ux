@@ -34,9 +34,12 @@ export function useApproveCallback(
   const { config } = usePrepareContractWrite({
     // @ts-ignore
     address: amountToApprove?.token?.address,
+    // @ts-ignore
     abi: ERC20_ABI,
+    // @ts-ignore
     functionName: 'approve',
     args: [addressToApprove, amountToApprove?.raw.toString()],
+    // args: [addressToApprove, amountToApprove?.raw.toString()],
   })
   const { writeAsync } = useContractWrite(config)
 

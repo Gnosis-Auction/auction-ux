@@ -1,9 +1,9 @@
-import { BigNumberish, BytesLike, utils } from 'ethers'
 import { useCallback, useMemo } from 'react'
 
-import { JSBI, Token, TokenAmount } from '@josojo/honeyswap-sdk'
+import { Token, TokenAmount } from '@josojo/honeyswap-sdk'
 import { prepareWriteContract, writeContract } from '@wagmi/core'
 import dayjs from 'dayjs'
+import { encodeAbiParameters, parseAbiParameters, parseUnits } from 'viem'
 import { useAccount, useBalance, useNetwork } from 'wagmi'
 
 import { useApproveCallback } from './useApproveCallback'
@@ -19,15 +19,15 @@ import {
 type ValuesToSend = [
   string,
   string,
-  BigNumberish,
-  BigNumberish,
-  BigNumberish,
-  BigNumberish,
-  BigNumberish,
-  BigNumberish,
+  string,
+  string,
+  BigInt,
+  BigInt,
+  BigInt,
+  BigInt,
   boolean,
   string,
-  BytesLike,
+  string,
 ]
 export const useSubmitAuction = () => {
   const { address } = useAccount()
@@ -78,7 +78,7 @@ export const useSubmitAuction = () => {
   const approvalTokenAmount = useMemo(() => {
     if (!auctioningTokenData) return undefined
     if (!auctioningToken) return undefined
-    return new TokenAmount(auctioningToken, JSBI.BigInt(auctioningTokenData.value))
+    return new TokenAmount(auctioningToken, auctioningTokenData.value)
   }, [auctioningTokenData, auctioningToken])
 
   const [, approveCallback] = useApproveCallback(
@@ -113,21 +113,26 @@ export const useSubmitAuction = () => {
       return
     }
 
-    const minBuyAmountInAtoms = utils.parseUnits(minBuyAmount, biddingTokenData?.decimals)
-    const minBuyAmountPerOrderInAtoms = utils.parseUnits(
-      minBuyAmountPerOrder as string,
+    if (!biddingTokenData) {
+      console.error('biddingTokenData not found')
+      return
+    }
+
+    const minBuyAmountInAtoms = parseUnits(minBuyAmount as `${number}`, biddingTokenData.decimals)
+    const minBuyAmountPerOrderInAtoms = parseUnits(
+      minBuyAmountPerOrder as `${number}`,
       biddingTokenData?.decimals,
     )
-    const minFundingThresholdInAtoms = utils.parseUnits(
-      minFundingThreshold as string,
+    const minFundingThresholdInAtoms = parseUnits(
+      minFundingThreshold as `${number}`,
       biddingTokenData?.decimals,
     )
-    const sellAmountInAtoms = utils.parseUnits(sellAmount, auctioningTokenData.decimals)
+    const sellAmountInAtoms = parseUnits(sellAmount as `${number}`, auctioningTokenData.decimals)
 
     const auctionEndDateDayjs = dayjs(auctionEndDate)
     const orderCancellationEndDateDayjs = dayjs(orderCancellationEndDate)
 
-    if (sellAmountInAtoms.gt(auctioningTokenData.value)) {
+    if (sellAmountInAtoms > auctioningTokenData.value) {
       await approveCallback()
     }
     if (!chainId) {
@@ -148,20 +153,26 @@ export const useSubmitAuction = () => {
         ? // @ts-ignore
           ALLOW_LIST_OFF_CHAIN_MANAGED[chainId]
         : '0x0000000000000000000000000000000000000000',
-      isWhiteListingProcessUsed ? utils.defaultAbiCoder.encode(['address'], [allowListData]) : '0x',
+      isWhiteListingProcessUsed
+        ? // @ts-ignore
+          encodeAbiParameters(parseAbiParameters('address'), [allowListData])
+        : '0x',
     ]
 
-    const config = await prepareWriteContract({
+    const { request } = await prepareWriteContract({
       // @ts-ignore
       address: getEasyAuctionAddress(chainId || 1),
+      // @ts-ignore
       abi: EASY_AUCTION_ABI,
+      // @ts-ignore
       functionName: 'initiateAuction',
+      // @ts-ignore
       args: valuesToSend,
     })
 
-    return writeContract(config).then((response) => {
+    return writeContract(request).then((response) => {
       addTransaction(response, {
-        summary: `Initiate auction`,
+        summary: `Auctioned ${sellAmount} ${auctioningTokenData.symbol} for ${minBuyAmount} ${biddingTokenData?.symbol}.`,
       })
       return response.hash
     })

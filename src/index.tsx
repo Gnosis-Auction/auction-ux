@@ -29,7 +29,7 @@ const root = createRoot(container)
 
 root.render(
   <>
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiClient}>
       <Provider store={store}>
         <Updaters />
         <ThemeProvider>

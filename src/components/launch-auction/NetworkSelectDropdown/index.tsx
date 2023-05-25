@@ -42,7 +42,7 @@ export const NetworkSelectDropdown = () => {
           <DropdownPagination
             dropdownButtonContent={
               <ButtonSelect
-                content={<ButtonText>{NETWORK_CONFIGS[(value as number) || 1].name}</ButtonText>}
+                content={<ButtonText>{NETWORK_CONFIGS[value as number].name}</ButtonText>}
               />
             }
             dropdownPosition={DropdownPosition.right}

@@ -1,4 +1,4 @@
-import { useProvider } from 'wagmi'
+import { usePublicClient } from 'wagmi'
 
 import { useAuctionForm } from '../../../hooks/useAuctionForm'
 import { FORM_PARAMETERS, FormKeys } from '../../../pages/LaunchAuction/formConfig'
@@ -15,7 +15,7 @@ export const AllowListDataInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
   const { label: isAllowedLabel, tooltipText: isAllowedTooltipText } = FORM_PARAMETERS[isAllowedKey]
   const { watch } = useAuctionForm()
-  const provider = useProvider()
+  const provider = usePublicClient()
 
   const isWhiteListingProcessUsed = watch(isAllowedKey)
 

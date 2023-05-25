@@ -42,15 +42,22 @@ export function useCancelOrderCallback(
 
       const decodedOrder = decodeOrder(orderId)
 
-      const config = await prepareWriteContract({
+      const { request } = await prepareWriteContract<
+        typeof EASY_AUCTION_ABI,
+        'cancelSellOrders',
+        number
+      >({
         // @ts-ignore
         address: getEasyAuctionAddress(chainId || 1),
+        // @ts-ignore
         abi: EASY_AUCTION_ABI,
+        // @ts-ignore
         functionName: 'cancelSellOrders',
+        // @ts-ignore
         args: [auctionId, [orderId]],
       })
 
-      return writeContract(config)
+      return writeContract(request)
         .then((response) => {
           addTransaction(response, {
             summary:

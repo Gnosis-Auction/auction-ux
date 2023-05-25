@@ -2,10 +2,11 @@ import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
 import { Contract } from '@ethersproject/contracts'
-import { JsonRpcSigner, Provider, Web3Provider } from '@ethersproject/providers'
+import { Provider, Web3Provider } from '@ethersproject/providers'
 import { parseBytes32String } from '@ethersproject/strings'
 import { JSBI, Percent, Token, TokenAmount, WETH } from '@josojo/honeyswap-sdk'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import { PublicClient } from 'viem'
 
 import { ChainId, NETWORK_CONFIGS } from './networkConfig'
 import easyAuctionABI from '../constants/abis/easyAuction/easyAuction.json'
@@ -114,19 +115,6 @@ export function calculateSlippageAmount(value: TokenAmount, slippage: number): [
     JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
     JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 + slippage)), JSBI.BigInt(10000)),
   ]
-}
-
-// account is not optional
-export function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
-  return library.getSigner(account).connectUnchecked()
-}
-
-// account is optional
-export function getProviderOrSigner(
-  library: Web3Provider,
-  account?: string,
-): Web3Provider | JsonRpcSigner {
-  return account ? getSigner(library, account) : library
 }
 
 // account is optional
@@ -240,9 +228,10 @@ export function isTimeout(timeId: NodeJS.Timeout | undefined): timeId is NodeJS.
   return typeof timeId !== 'undefined'
 }
 
-export const checkIsContract = async (provider: Provider, address: string) => {
+export const checkIsContract = async (provider: PublicClient, address: string) => {
   try {
-    const code = await provider.getCode(address)
+    // @ts-ignore
+    const code = await provider.getBytecode({ address })
     return code !== '0x'
   } catch (error) {
     return false

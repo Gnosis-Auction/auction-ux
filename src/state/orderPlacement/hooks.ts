@@ -606,9 +606,9 @@ export function useOnChainAuctionData(auctionIdentifier: AuctionIdentifier): {
     args: [auctionId],
   })
 
-  const auctioningTokenAddress: string | undefined = auctionInfo?.auctioningToken.toString()
+  const auctioningTokenAddress: string | undefined = auctionInfo?.[0]
 
-  const biddingTokenAddress: string | undefined = auctionInfo?.biddingToken.toString()
+  const biddingTokenAddress: string | undefined = auctionInfo?.[1]
 
   const { isLoading: isAuctioningTokenLoading, token: auctioningToken } =
     useTokenByAddressAndAutomaticallyAdd(auctioningTokenAddress)

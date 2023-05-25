@@ -1,7 +1,6 @@
-import { BigNumber, utils } from 'ethers'
-
 import { fetchBalance, fetchToken } from '@wagmi/core'
 import { useWatch } from 'react-hook-form'
+import { formatUnits, getAddress, parseUnits } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { useAuctionForm } from '../../../hooks/useAuctionForm'
@@ -29,7 +28,7 @@ export const AuctioningTokenInput = () => {
           validate: {
             checksum: (value) => {
               try {
-                utils.getAddress(value)
+                getAddress(value)
                 return true
               } catch (e) {
                 return 'The address has an invalid checksum'
@@ -60,11 +59,11 @@ export const AuctioningTokenInput = () => {
               })
               const { auctionedSellAmount } = getValues()
               if (auctionedSellAmount && !!balance) {
-                const sellAmountInAtoms = utils.parseUnits(auctionedSellAmount, decimals)
-                const balanceInUnits = utils.formatUnits(balance.toString(), decimals)
+                const sellAmountInAtoms = parseUnits(auctionedSellAmount as `${number}`, decimals)
+                const balanceInUnits = formatUnits(balance, decimals)
                 const symbolERC20 = symbol.toUpperCase()
-                if (sellAmountInAtoms && sellAmountInAtoms.gt(BigNumber.from('0'))) {
-                  if (balance.lt(sellAmountInAtoms)) {
+                if (sellAmountInAtoms && sellAmountInAtoms > 0) {
+                  if (balance < sellAmountInAtoms) {
                     return `Amount to sell is ${auctionedSellAmount} ${symbolERC20} and your balance is ${balanceInUnits} ${symbolERC20}`
                   }
                 }

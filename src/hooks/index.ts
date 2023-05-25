@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { isMobile } from 'react-device-detect'
-import { useAccount, useConnect, useDisconnect, useNetwork, useProvider, useSigner } from 'wagmi'
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useNetwork,
+  usePublicClient,
+  useWalletClient,
+} from 'wagmi'
 
 import { injected, walletConnectConnector } from '../connectors'
 import { useOrderPlacementState } from '../state/orderPlacement/hooks'
@@ -14,8 +21,8 @@ export function useActiveWeb3React() {
   const { address: account, connector: activeConnector } = useAccount()
   const { disconnect } = useDisconnect()
   const { chain } = useNetwork()
-  const provider = useProvider()
-  const { data: signer } = useSigner()
+  const provider = usePublicClient()
+  const { data: signer } = useWalletClient()
   const context = useMemo(
     () => ({
       connector: activeConnector,
