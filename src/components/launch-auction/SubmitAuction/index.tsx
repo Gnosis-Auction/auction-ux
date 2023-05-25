@@ -31,7 +31,7 @@ const SubmitAuction = () => {
   const { address: account } = useAccount()
   const toggleWalletModal = useWalletModalToggle()
 
-  const { getValues, handleSubmit, setValue } = useAuctionForm()
+  const { getValues, handleSubmit, setError, setValue } = useAuctionForm()
 
   const selectedChain = getValues().chainId
 
@@ -50,10 +50,12 @@ const SubmitAuction = () => {
   const onError = (errors: FieldErrors<LaunchAuctionFormValues>) => {
     Object.values(errors).forEach((error) => {
       const {
+        message,
         // @ts-ignore
         ref: { name },
       } = error
-      setValue(name, '', { shouldTouch: true })
+      setValue(name, '', { shouldValidate: true, shouldTouch: true })
+      setError(name, { type: 'validate', message })
     })
   }
 
