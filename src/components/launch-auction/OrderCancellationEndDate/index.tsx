@@ -9,14 +9,14 @@ const formKey: FormKeys = 'orderCancellationEndDate'
 
 export const OrderCancellationEndDate = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { getValues } = useAuctionForm()
+  const { watch } = useAuctionForm()
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
       <DateInput
         name={formKey}
         rules={{
-          required: true,
+          required: 'Please enter the order cancellation end Date',
           validate: {
             future: (value) => {
               const now = dayjs().second(0).millisecond(0)
@@ -26,7 +26,7 @@ export const OrderCancellationEndDate = () => {
               return true
             },
             beforeAuctionEndDate: (value) => {
-              const { auctionEndDate } = getValues()
+              const auctionEndDate = watch('auctionEndDate')
               if (dayjs(value).isAfter(dayjs(auctionEndDate))) {
                 return 'Order cancellation End Date should be before auction End Date'
               }
@@ -34,7 +34,6 @@ export const OrderCancellationEndDate = () => {
             },
           },
         }}
-        triggerOnChange="auctionEndDate"
       />
     </FormInput>
   )

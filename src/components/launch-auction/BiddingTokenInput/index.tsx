@@ -11,14 +11,14 @@ const formKey: FormKeys = 'biddingTokenAddress'
 
 export const BiddingTokenInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { getValues } = useAuctionForm()
+  const { watch } = useAuctionForm()
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
       <Input
         name={formKey}
         rules={{
-          required: true,
+          required: 'Please enter the bidding token address',
           pattern: addressRegex,
           validate: {
             checksum: (value: string) => {
@@ -43,7 +43,7 @@ export const BiddingTokenInput = () => {
               }
             },
             notEqual: (value: string) => {
-              const { auctioningTokenAddress } = getValues()
+              const auctioningTokenAddress = watch('auctioningTokenAddress')
               if (value.toLowerCase() === auctioningTokenAddress.toLowerCase()) {
                 return 'Auctioning token and bidding token must be different'
               }
@@ -51,7 +51,6 @@ export const BiddingTokenInput = () => {
             },
           },
         }}
-        triggerOnChange="auctioningTokenAddress"
       />
     </FormInput>
   )

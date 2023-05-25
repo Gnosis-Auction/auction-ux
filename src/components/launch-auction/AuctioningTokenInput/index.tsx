@@ -1,5 +1,4 @@
 import { fetchBalance, fetchToken } from '@wagmi/core'
-import { useWatch } from 'react-hook-form'
 import { formatUnits, getAddress, parseUnits } from 'viem'
 import { useAccount } from 'wagmi'
 
@@ -13,17 +12,15 @@ const formKey: FormKeys = 'auctioningTokenAddress'
 
 export const AuctioningTokenInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { control, getValues } = useAuctionForm()
+  const { watch } = useAuctionForm()
   const { address } = useAccount()
-
-  useWatch({ control, name: 'auctionedSellAmount' })
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
       <Input
         name={formKey}
         rules={{
-          required: true,
+          required: 'Please enter the auctioning token address',
           pattern: addressRegex,
           validate: {
             checksum: (value) => {
@@ -57,7 +54,7 @@ export const AuctioningTokenInput = () => {
                 // @ts-ignore
                 token: value,
               })
-              const { auctionedSellAmount } = getValues()
+              const auctionedSellAmount = watch('auctionedSellAmount')
               if (auctionedSellAmount && !!balance) {
                 const sellAmountInAtoms = parseUnits(auctionedSellAmount as `${number}`, decimals)
                 const balanceInUnits = formatUnits(balance, decimals)
@@ -71,7 +68,7 @@ export const AuctioningTokenInput = () => {
               return true
             },
             notEqual: (value: string) => {
-              const { biddingTokenAddress } = getValues()
+              const biddingTokenAddress = watch('biddingTokenAddress')
               if (value.toLowerCase() === biddingTokenAddress.toLowerCase()) {
                 return 'Bidding token and auctioning token must be different'
               }
@@ -79,7 +76,6 @@ export const AuctioningTokenInput = () => {
             },
           },
         }}
-        triggerOnChange="biddingTokenAddress"
       />
     </FormInput>
   )

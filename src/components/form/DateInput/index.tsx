@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import DatePicker from 'react-datepicker'
-import { Controller, RegisterOptions, useWatch } from 'react-hook-form'
+import { Controller, RegisterOptions } from 'react-hook-form'
 import { useMediaLayout } from 'use-media'
 
 import 'react-datepicker/dist/react-datepicker.css'
@@ -63,25 +63,18 @@ interface Props {
   value?: Date
   rules?: RegisterOptions
   placeholder?: string
-  triggerOnChange?: FormKeys
 }
 
-const DateInput: React.FC<Props> = ({ name, rules, triggerOnChange }) => {
-  const { control, getFieldState, setValue, trigger } = useAuctionForm()
+const DateInput: React.FC<Props> = ({ name, rules }) => {
+  const { control, getFieldState, setValue } = useAuctionForm()
 
   const onDateChange: (date: Date) => void = (date) => {
     setValue(name, date)
   }
 
-  const { error } = getFieldState(name)
+  const { error, isTouched } = getFieldState(name)
 
   const isMobile = useMediaLayout({ maxWidth: '600px' })
-
-  const watch = useWatch({ control, name: triggerOnChange, disabled: !triggerOnChange })
-
-  useEffect(() => {
-    trigger()
-  }, [watch, trigger])
 
   return (
     <Controller<LaunchAuctionFormValues>
@@ -92,7 +85,7 @@ const DateInput: React.FC<Props> = ({ name, rules, triggerOnChange }) => {
         <DateInputWrapper>
           <Input name={name} onChange={onDateChange} selected={value} showTimeSelect={!isMobile} />
           <Image alt={'Icon'} src={Calendar} />
-          {error?.message && <Error>{error?.message}</Error>}
+          {error?.message && isTouched && <Error>{error?.message}</Error>}
         </DateInputWrapper>
       )}
       rules={rules}

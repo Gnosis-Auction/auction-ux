@@ -1,11 +1,13 @@
 import { useCallback } from 'react'
 import styled from 'styled-components'
 
+import { FieldErrors } from 'react-hook-form'
 import { useAccount, useNetwork } from 'wagmi'
 
 import { useAuctionForm } from '../../../hooks/useAuctionForm'
 import { useSubmitAuction } from '../../../hooks/useSubmitAuction'
 import useSwitchNetwork from '../../../hooks/useSwitchNetwork'
+import { LaunchAuctionFormValues } from '../../../pages/LaunchAuction/formConfig'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { NETWORK_CONFIGS } from '../../../utils/networkConfig'
 import { Button } from '../../buttons/Button'
@@ -29,7 +31,7 @@ const SubmitAuction = () => {
   const { address: account } = useAccount()
   const toggleWalletModal = useWalletModalToggle()
 
-  const { getValues } = useAuctionForm()
+  const { getValues, handleSubmit, setValue } = useAuctionForm()
 
   const selectedChain = getValues().chainId
 
@@ -45,8 +47,18 @@ const SubmitAuction = () => {
     initiateNewAuction()
   }, [switchNetwork, initiateNewAuction, toggleWalletModal, account, selectedChain, chain])
 
+  const onError = (errors: FieldErrors<LaunchAuctionFormValues>) => {
+    Object.values(errors).forEach((error) => {
+      const {
+        // @ts-ignore
+        ref: { name },
+      } = error
+      setValue(name, '', { shouldTouch: true })
+    })
+  }
+
   return (
-    <ActionButton disabled={!selectedChain} onClick={onSubmit}>
+    <ActionButton disabled={!selectedChain} onClick={handleSubmit(onSubmit, onError)}>
       {chain?.id === getValues().chainId || !selectedChain
         ? 'Launch Auction'
         : `Switch Network (${NETWORK_CONFIGS[selectedChain]?.name || ''})`}

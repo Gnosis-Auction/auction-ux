@@ -13,7 +13,7 @@ export const MinimumBiddingAmountPerOrderInput = () => {
       <Input
         name={formKey}
         rules={{
-          required: true,
+          required: 'Please enter the minimum bidding amount per order.',
           pattern: positiveNumberRegex,
           validate: {
             min: (value) => value > 0 || 'Minimal bid amount must be greather than 0',
