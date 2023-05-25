@@ -1,6 +1,5 @@
-import { utils } from 'ethers'
-
 import { fetchToken } from '@wagmi/core'
+import { getAddress } from 'viem'
 
 import { useAuctionForm } from '../../../hooks/useAuctionForm'
 import { FORM_PARAMETERS, FormKeys } from '../../../pages/LaunchAuction/formConfig'
@@ -24,7 +23,7 @@ export const BiddingTokenInput = () => {
           validate: {
             checksum: (value: string) => {
               try {
-                utils.getAddress(value)
+                getAddress(value)
                 return true
               } catch (e) {
                 return 'The address has an invalid checksum'

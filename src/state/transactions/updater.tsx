@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { fetchTransaction } from '@wagmi/core'
+import { fetchTransaction, waitForTransaction } from '@wagmi/core'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { finalizeTransaction } from './actions'
@@ -38,7 +38,9 @@ export default function Updater() {
           hash,
         })
           .then((transactionResponse) => {
-            transactionResponse.wait(1).then((receipt) => {
+            const hash = transactionResponse.hash
+            // @ts-ignore
+            waitForTransaction({ hash }).then((receipt) => {
               if (receipt) {
                 dispatch(
                   finalizeTransaction({
@@ -46,7 +48,7 @@ export default function Updater() {
                     hash,
                     receipt: {
                       blockHash: receipt.blockHash,
-                      blockNumber: receipt.blockNumber,
+                      blockNumber: Number(receipt.blockNumber),
                       contractAddress: receipt.contractAddress,
                       from: receipt.from,
                       status: receipt.status,
@@ -60,7 +62,7 @@ export default function Updater() {
                 dispatch(finalizeOrderPlacement())
                 dispatch(pullOrderbookData())
                 // add success or failure popup
-                if (receipt.status === 1) {
+                if (receipt.status === 'success') {
                   addPopup({
                     txn: {
                       hash,

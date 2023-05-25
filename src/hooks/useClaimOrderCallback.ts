@@ -253,8 +253,11 @@ export const useClaimOrderCallback = (
   const { config } = usePrepareContractWrite({
     // @ts-ignore
     address: getEasyAuctionAddress(chainId as ChainId),
+    // @ts-ignore
     abi: EASY_AUCTION_ABI,
+    // @ts-ignore
     functionName: 'claimFromParticipantOrder',
+    // @ts-ignore
     args: [auctionId, claimInfo?.sellOrdersFormUser],
   })
 

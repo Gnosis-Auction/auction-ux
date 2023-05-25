@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
+import { useNetwork } from 'wagmi'
 
 import { DEFAULT_FORM_PARAMS, LaunchAuctionFormValues } from './formConfig'
 import { AllowListDataInput } from '../../components/launch-auction/AllowListDataInput'
@@ -51,9 +52,10 @@ const FormBody = styled.div`
 `
 
 const LaunchAuction: React.FC = () => {
+  const { chain } = useNetwork()
   const formMethods = useForm<Required<LaunchAuctionFormValues>>({
     mode: 'all',
-    defaultValues: DEFAULT_FORM_PARAMS,
+    defaultValues: { ...DEFAULT_FORM_PARAMS, chainId: chain?.id || 1 },
   })
   const { control } = formMethods
 

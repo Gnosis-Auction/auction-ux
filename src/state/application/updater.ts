@@ -22,11 +22,12 @@ export default function Updater() {
   })
 
   const blockNumberCallback = useCallback(
-    (blockNumber: number) => {
+    (blockNumber: bigint) => {
       setBlockchainState((currentState) => {
         if (chainId === currentState.chainId) {
-          if (typeof currentState.blockNumber !== 'number') return { chainId, blockNumber }
-          return { chainId, blockNumber: Math.max(blockNumber, currentState.blockNumber) }
+          if (typeof currentState.blockNumber !== 'number')
+            return { chainId, blockNumber: Number(blockNumber) }
+          return { chainId, blockNumber: Math.max(Number(blockNumber), currentState.blockNumber) }
         }
         return currentState
       })
