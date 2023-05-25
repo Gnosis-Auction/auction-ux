@@ -13,13 +13,12 @@ export const AuctionedSellAmountInput = () => {
       <Input
         name={formKey}
         rules={{
-          required: true,
+          required: 'Please enter the amount to sell.',
           pattern: positiveNumberRegex,
           validate: {
             min: (value) => value > 0 || 'Amount to sell must be positive',
           },
         }}
-        triggerOnChange="auctioningTokenAddress"
       />
     </FormInput>
   )

@@ -13,7 +13,7 @@ export const MinimumFundingThresholdInput = () => {
       <Input
         name={formKey}
         rules={{
-          required: true,
+          required: 'Please enter the minimum funding threshold.',
           pattern: positiveNumberRegex,
         }}
       />

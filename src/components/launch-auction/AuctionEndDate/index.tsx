@@ -14,18 +14,17 @@ export const AuctionEndDate = () => {
       <DateInput
         name={formKey}
         rules={{
-          required: true,
+          required: 'Please enter the order cancellation end date',
           validate: {
             future: (value) => {
               const now = dayjs().second(0).millisecond(0)
               if (dayjs(value).isBefore(now)) {
-                return 'Order cancellation End Date should be in the future'
+                return 'Auction end date should be in the future'
               }
               return true
             },
           },
         }}
-        triggerOnChange="orderCancellationEndDate"
       />
     </FormInput>
   )

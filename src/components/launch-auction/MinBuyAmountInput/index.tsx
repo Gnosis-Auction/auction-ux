@@ -13,7 +13,7 @@ export const MinBuyAmountInput = () => {
       <Input
         name={formKey}
         rules={{
-          required: true,
+          required: 'Please enter the minimum buy amount.',
           pattern: positiveNumberRegex,
           validate: {
             min: (value) => value > 0 || 'Amount to buy should be positive',

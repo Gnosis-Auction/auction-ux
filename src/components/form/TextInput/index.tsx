@@ -1,7 +1,6 @@
-import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { RegisterOptions, useWatch } from 'react-hook-form'
+import { RegisterOptions } from 'react-hook-form'
 
 import { useAuctionForm } from '../../../hooks/useAuctionForm'
 import { FormKeys } from '../../../pages/LaunchAuction/formConfig'
@@ -41,19 +40,12 @@ interface Props {
   readOnly?: boolean
   placeholder?: string
   rules?: RegisterOptions
-  triggerOnChange?: FormKeys
 }
 
-export const TextInput = ({ name, placeholder, readOnly, rules = {}, triggerOnChange }: Props) => {
-  const { control, getFieldState, register, trigger } = useAuctionForm()
+export const TextInput = ({ name, placeholder, readOnly, rules = {} }: Props) => {
+  const { getFieldState, register } = useAuctionForm()
 
-  const { error } = getFieldState(name)
-
-  const watch = useWatch({ control, name: triggerOnChange, disabled: !triggerOnChange })
-
-  useEffect(() => {
-    trigger()
-  }, [watch, trigger])
+  const { error, isTouched } = getFieldState(name)
 
   return (
     <TextInputWrapper>
@@ -68,7 +60,7 @@ export const TextInput = ({ name, placeholder, readOnly, rules = {}, triggerOnCh
         spellCheck="false"
         type="text"
       />
-      {error?.message && <Error>{error?.message}</Error>}
+      {error?.message && isTouched && <Error>{error?.message}</Error>}
     </TextInputWrapper>
   )
 }
