@@ -43,20 +43,29 @@ interface Props {
 }
 
 export const TextInput = ({ name, placeholder, readOnly, rules = {} }: Props) => {
-  const { getFieldState, register } = useAuctionForm()
+  const { clearErrors, getFieldState, register } = useAuctionForm()
 
   const { error, isTouched } = getFieldState(name)
+  const { onBlur, onChange, ref } = register(name, rules)
+
+  const onChangeHandler = (val) => {
+    onChange(val)
+    clearErrors(name)
+  }
 
   return (
     <TextInputWrapper>
       <Input
-        {...register(name, rules)}
         autoComplete="off"
         autoCorrect="off"
         maxLength={79}
         minLength={1}
+        name={name}
+        onBlur={onBlur}
+        onChange={onChangeHandler}
         placeholder={placeholder || ''}
         readOnly={readOnly}
+        ref={ref}
         spellCheck="false"
         type="text"
       />

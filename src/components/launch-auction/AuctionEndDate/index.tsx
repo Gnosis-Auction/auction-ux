@@ -14,7 +14,7 @@ export const AuctionEndDate = () => {
       <DateInput
         name={formKey}
         rules={{
-          required: 'Please enter the order cancellation end date',
+          required: 'Please enter the auction end date',
           validate: {
             future: (value) => {
               const now = dayjs().second(0).millisecond(0)

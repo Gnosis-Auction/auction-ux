@@ -66,9 +66,10 @@ interface Props {
 }
 
 const DateInput: React.FC<Props> = ({ name, rules }) => {
-  const { control, getFieldState, setValue } = useAuctionForm()
+  const { clearErrors, control, getFieldState, setValue } = useAuctionForm()
 
   const onDateChange: (date: Date) => void = (date) => {
+    clearErrors(name)
     setValue(name, date)
   }
 
