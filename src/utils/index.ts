@@ -232,7 +232,7 @@ export const checkIsContract = async (provider: PublicClient, address: string) =
   try {
     // @ts-ignore
     const code = await provider.getBytecode({ address })
-    return code !== '0x'
+    return code !== undefined
   } catch (error) {
     return false
   }

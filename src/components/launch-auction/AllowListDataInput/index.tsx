@@ -32,10 +32,10 @@ export const AllowListDataInput = () => {
               required: true,
               pattern: addressRegex,
               validate: {
-                isContract: async (value) => {
-                  if (!value) return true
-                  const allowListDataIsContract = await checkIsContract(provider, value)
-                  return allowListDataIsContract ? 'allowListData should be an EOA' : true
+                isContract: async (address) => {
+                  if (!address) return true
+                  const allowListDataIsContract = await checkIsContract(provider, address)
+                  return allowListDataIsContract ? 'Signing Address should be an EOA' : true
                 },
               },
             }}
