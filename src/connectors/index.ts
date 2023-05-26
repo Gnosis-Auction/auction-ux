@@ -1,5 +1,5 @@
 import { PortisConnector } from '@web3-react/portis-connector'
-import { configureChains, createClient } from 'wagmi'
+import { configureChains, createConfig } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
@@ -13,6 +13,8 @@ import {
   NETWORK_CONFIGS,
   avalanche,
   avalancheFuji,
+  bsc,
+  bscTestnet,
   gnosis,
   goerli,
   mainnet,
@@ -21,8 +23,8 @@ import {
 } from './../utils/networkConfig'
 import { INFURA_KEY, PORTIS_ID, WALLET_CONNECT_PROJECT_ID } from '../constants/config'
 
-const { chains, provider } = configureChains(
-  [mainnet, polygonMumbai, gnosis, goerli, polygon, avalanche, avalancheFuji],
+const { chains, publicClient } = configureChains(
+  [mainnet, polygonMumbai, gnosis, goerli, polygon, avalanche, avalancheFuji, bsc, bscTestnet],
   [infuraProvider({ apiKey: INFURA_KEY }), publicProvider()],
 )
 
@@ -58,7 +60,7 @@ const safeConnector = new SafeConnector({
   },
 })
 
-export const wagmiClient = createClient({
+export const wagmiClient = createConfig({
   autoConnect: true,
   connectors: [
     metamaskConnector,
@@ -67,7 +69,7 @@ export const wagmiClient = createClient({
     walletConnectConnector,
     safeConnector,
   ],
-  provider,
+  publicClient,
 })
 
 const urls: string[] = []

@@ -167,6 +167,7 @@ export const theme = (darkMode: boolean): DefaultTheme => ({
     sm: '480px',
     xl: '1024px',
     xs: '320px',
+    xxs: '250px',
     xxl: '1280px',
     xxxl: '1366px',
   },

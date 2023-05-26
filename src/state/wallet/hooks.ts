@@ -42,7 +42,7 @@ export function useTokenBalances(
             [tokenAddress: string]: TokenAmount | undefined
           }>((memo, token, i) => {
             const value = balances?.[i]
-            const amount = value ? JSBI.BigInt(value.toString()) : undefined
+            const amount = value?.result ? JSBI.BigInt(value.result.toString()) : undefined
             if (amount) {
               memo[token.address] = new TokenAmount(token, amount)
             }
@@ -87,7 +87,7 @@ export function useTokenBalancesTreatWETHAsETH(
     if (includesWETH && ETHBalance?.data) {
       // @ts-ignore
       const weth = WETH[chainId as ChainId]
-      const ethBalance = JSBI.BigInt(ETHBalance.data.value)
+      const ethBalance = ETHBalance.data.value
       return {
         ...balancesWithoutWETH,
         ...(ethBalance && weth ? { [weth.address]: new TokenAmount(weth, ethBalance) } : null),

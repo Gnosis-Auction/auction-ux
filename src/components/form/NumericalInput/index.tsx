@@ -3,6 +3,8 @@ import React from 'react'
 import { escapeRegExp } from '../../../utils'
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
+export const addressRegex = /0x+[A-F,a-f,0-9]{40}/
+export const positiveNumberRegex = /^\d+(\.\d{1,4})?$/
 
 interface Props {
   hasError?: boolean

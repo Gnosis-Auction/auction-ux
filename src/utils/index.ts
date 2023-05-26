@@ -1,14 +1,12 @@
-import { Signer } from 'ethers'
-
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
 import { Contract } from '@ethersproject/contracts'
-import { JsonRpcSigner, Provider, Web3Provider } from '@ethersproject/providers'
+import { Provider, Web3Provider } from '@ethersproject/providers'
 import { parseBytes32String } from '@ethersproject/strings'
 import { JSBI, Percent, Token, TokenAmount, WETH } from '@josojo/honeyswap-sdk'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
-import { SiweMessage } from 'siwe'
+import { PublicClient } from 'viem'
 
 import { ChainId, NETWORK_CONFIGS } from './networkConfig'
 import easyAuctionABI from '../constants/abis/easyAuction/easyAuction.json'
@@ -51,6 +49,18 @@ export const DEPOSIT_AND_PLACE_ORDER: { [chainId in ChainId]: string } = {
   [ChainId.FUJI]: '0x39cbA0cC28EE67EAa8134C0e80a061c13EBC3603',
   [ChainId.BSC]: '0x4bAbb4b89ed7180aeF95F872f621afEE724F0344',
   [ChainId.BSCTESTNET]: '0x14082EDeFCa073578d2C16E8fB42967bEc188E59',
+}
+
+export const ALLOW_LIST_OFF_CHAIN_MANAGED: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: '0x0F4648d997e486cE06577d6Ee2FecBcA84b834F4',
+  [ChainId.GÖRLI]: '0xE0AD16EB7Ea467C694E6cFdd5E7D61FE850e8B53',
+  [ChainId.XDAI]: '0x0F4648d997e486cE06577d6Ee2FecBcA84b834F4',
+  [ChainId.MATIC]: '0x0480A370279B2e70378188E1bd4f1cD7D76D8aD2',
+  [ChainId.MUMBAI]: '0xE0AD16EB7Ea467C694E6cFdd5E7D61FE850e8B53',
+  [ChainId.AVALANCHE]: '0x5ae9b340A98085D0fc25Ae98A5eB704bA08E0dF8',
+  [ChainId.FUJI]: '0x2f0045AA41879184a283A644F25Ec4FA31C8767E',
+  [ChainId.BSC]: '0xE0AD16EB7Ea467C694E6cFdd5E7D61FE850e8B53',
+  [ChainId.BSCTESTNET]: '0xE0AD16EB7Ea467C694E6cFdd5E7D61FE850e8B53',
 }
 
 const getExplorerPrefix = (chainId: ChainId) => {
@@ -105,19 +115,6 @@ export function calculateSlippageAmount(value: TokenAmount, slippage: number): [
     JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
     JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 + slippage)), JSBI.BigInt(10000)),
   ]
-}
-
-// account is not optional
-export function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
-  return library.getSigner(account).connectUnchecked()
-}
-
-// account is optional
-export function getProviderOrSigner(
-  library: Web3Provider,
-  account?: string,
-): Web3Provider | JsonRpcSigner {
-  return account ? getSigner(library, account) : library
 }
 
 // account is optional
@@ -231,36 +228,12 @@ export function isTimeout(timeId: NodeJS.Timeout | undefined): timeId is NodeJS.
   return typeof timeId !== 'undefined'
 }
 
-export interface AuthSig {
-  sig: string
-  derivedVia: string
-  signedMessage: string
-  address: string
-}
-
-export async function generateAuthSig(
-  signer: Signer,
-  chainId: number,
-  auctionId: number,
-): Promise<AuthSig> {
-  const address = await signer.getAddress()
-  const siweMessage = new SiweMessage({
-    domain: 'gnosisauction',
-    address: address,
-    statement: `Sign in to access bidding for auction - ${auctionId}`,
-    uri: origin,
-    version: '1',
-    chainId: chainId,
-  })
-
-  const messageToSign = siweMessage.prepareMessage()
-  const signature = await signer.signMessage(messageToSign)
-
-  const authSig = {
-    sig: signature,
-    derivedVia: 'web3.eth.personal.sign',
-    signedMessage: messageToSign,
-    address: address,
+export const checkIsContract = async (provider: PublicClient, address: string) => {
+  try {
+    // @ts-ignore
+    const code = await provider.getBytecode({ address })
+    return code !== undefined
+  } catch (error) {
+    return false
   }
-  return authSig
 }

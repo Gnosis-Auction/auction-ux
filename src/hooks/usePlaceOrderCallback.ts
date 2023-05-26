@@ -109,16 +109,21 @@ export function usePlaceOrderCallback(
             signature ? signature : '0x',
           ]
 
-      const config = await prepareWriteContract({
+      const { request } = await prepareWriteContract({
+        // @ts-ignore
         address: isXdaiWethOrMatic
-          ? DEPOSIT_AND_PLACE_ORDER[chainId]
+          ? // @ts-ignore
+            DEPOSIT_AND_PLACE_ORDER[chainId]
           : getEasyAuctionAddress(chainId),
+        // @ts-ignore
         abi: isXdaiWethOrMatic ? DEPOSIT_AND_PLACE_ORDER_ABI : EASY_AUCTION_ABI,
+        // @ts-ignore
         functionName: isXdaiWethOrMatic ? 'depositAndPlaceOrder' : 'placeSellOrders',
+        // @ts-ignore
         args,
       })
 
-      return writeContract(config)
+      return writeContract(request)
         .then((response) => {
           addTransaction(response, {
             summary:

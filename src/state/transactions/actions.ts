@@ -1,14 +1,14 @@
 import { createAction } from '@reduxjs/toolkit'
 
 export interface SerializableTransactionReceipt {
-  to: string
+  to: string | null
   from: string
-  contractAddress: string
+  contractAddress: string | null
   transactionIndex: number
   blockHash: string
   transactionHash: string
   blockNumber: number
-  status?: number
+  status?: 'success' | 'reverted'
 }
 
 export const addTransaction = createAction<{

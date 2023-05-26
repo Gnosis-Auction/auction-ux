@@ -64,7 +64,7 @@ const Transaction = ({ hash }: { hash: string }) => {
   const pending = !allTransactions?.[hash]?.receipt
   const success =
     !pending &&
-    (allTransactions[hash].receipt.status === 1 ||
+    (allTransactions[hash].receipt.status === 'success' ||
       typeof allTransactions[hash].receipt.status === 'undefined')
 
   return (

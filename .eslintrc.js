@@ -64,7 +64,7 @@ module.exports = {
     'import/no-unresolved': 0,
     'import/no-extraneous-dependencies': [
       'error',
-      { optionalDependencies: true, peerDependencies: false },
+      { optionalDependencies: true, peerDependencies: false, devDependencies: true },
     ],
     'import/order': [
       'error',
