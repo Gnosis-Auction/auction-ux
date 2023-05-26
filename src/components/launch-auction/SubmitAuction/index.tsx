@@ -54,14 +54,14 @@ const SubmitAuction = () => {
         // @ts-ignore
         ref: { name },
       } = error
-      setValue(name, '', { shouldValidate: true, shouldTouch: true })
-      setError(name, { type: 'validate', message })
+      setError(name, { type: 'custom', message })
+      setValue(name, getValues()[name], { shouldValidate: true, shouldTouch: true })
     })
   }
 
   return (
     <ActionButton disabled={!selectedChain} onClick={handleSubmit(onSubmit, onError)}>
-      {chain?.id === getValues().chainId || !selectedChain
+      {chain?.id === selectedChain || !selectedChain
         ? 'Launch Auction'
         : `Switch Network (${NETWORK_CONFIGS[selectedChain]?.name || ''})`}
     </ActionButton>
