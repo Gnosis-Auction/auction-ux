@@ -4,6 +4,10 @@ export const navItems = [
     url: '/overview#topAnchor',
   },
   {
+    title: 'Launch Auction',
+    url: '/launch-auction',
+  },
+  {
     title: 'Docs',
     url: '/docs#topAnchor',
   },
