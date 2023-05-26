@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core'
 import dayjs from 'dayjs'
 import { encodeAbiParameters, parseAbiParameters, parseUnits } from 'viem'
-import { useAccount, useBalance, useNetwork } from 'wagmi'
+import { useAccount, useBalance, useContractRead, useNetwork } from 'wagmi'
 
 import { useAuctionForm } from './useAuctionForm'
 import EASY_AUCTION_ABI from '../constants/abis/easyAuction/easyAuction.json'
@@ -38,8 +38,8 @@ export const useSubmitAuction = () => {
 
   const {
     data: auctioningTokenData,
-    isError: isErrorFetchingAuctionAllowance,
-    isFetching: isFetchingAuctionAllowance,
+    isError: isErrorFetchingAuctionBalance,
+    isFetching: isFetchingAuctionBalance,
   } = useBalance({
     // @ts-ignore
     address,
@@ -50,14 +50,24 @@ export const useSubmitAuction = () => {
 
   const {
     data: biddingTokenData,
-    isError: isErrorFetchingBiddingAllowance,
-    isFetching: isFetchingBiddingAllowance,
+    isError: isErrorFetchingBiddingBalance,
+    isFetching: isFetchingBiddingBalance,
   } = useBalance({
     // @ts-ignore
     address,
     // @ts-ignore
     token: biddingTokenAddress,
     enabled: !!biddingTokenAddress,
+  })
+
+  const { data: allowance } = useContractRead({
+    // @ts-ignore
+    address: auctioningTokenAddress,
+    abi: ERC20_ABI,
+    functionName: 'allowance',
+    args: [address, getEasyAuctionAddress(chainId)],
+    watch: true,
+    enabled: !!auctioningTokenAddress,
   })
 
   const initiateNewAuction = useCallback(async () => {
@@ -75,18 +85,23 @@ export const useSubmitAuction = () => {
       orderCancellationEndDate,
     } = getValues()
 
-    if (isErrorFetchingAuctionAllowance || isErrorFetchingBiddingAllowance) {
+    if (isErrorFetchingAuctionBalance || isErrorFetchingBiddingBalance) {
       logger.error('InitiateNewAuction called without tokens')
       return
     }
 
     if (!auctioningTokenData) {
-      logger.error('auctioningTokenData not found')
+      logger.error('AuctioningTokenData not found')
       return
     }
 
     if (!biddingTokenData) {
-      logger.error('biddingTokenData not found')
+      logger.error('BiddingTokenData not found')
+      return
+    }
+
+    if (allowance === undefined) {
+      logger.error('Allowance not found')
       return
     }
 
@@ -104,7 +119,7 @@ export const useSubmitAuction = () => {
     const auctionEndDateDayjs = dayjs(auctionEndDate)
     const orderCancellationEndDateDayjs = dayjs(orderCancellationEndDate)
 
-    if (sellAmountInAtoms > auctioningTokenData.value) {
+    if ((allowance as bigint) < sellAmountInAtoms) {
       const { request } = await prepareWriteContract({
         // @ts-ignore
         address: auctioningTokenAddress,
@@ -184,15 +199,16 @@ export const useSubmitAuction = () => {
     addTransaction,
     auctioningTokenData,
     biddingTokenData,
+    allowance,
     chainId,
-    isErrorFetchingAuctionAllowance,
-    isErrorFetchingBiddingAllowance,
+    isErrorFetchingAuctionBalance,
+    isErrorFetchingBiddingBalance,
     getValues,
   ])
 
   return {
-    isError: isErrorFetchingAuctionAllowance || isErrorFetchingBiddingAllowance,
-    isLoading: isFetchingAuctionAllowance || isFetchingBiddingAllowance,
+    isError: isErrorFetchingAuctionBalance || isErrorFetchingBiddingBalance,
+    isLoading: isFetchingAuctionBalance || isFetchingBiddingBalance,
     initiateNewAuction,
   }
 }
