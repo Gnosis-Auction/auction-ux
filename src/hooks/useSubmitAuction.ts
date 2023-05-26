@@ -1,20 +1,18 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 
-import { Token, TokenAmount } from '@josojo/honeyswap-sdk'
-import { prepareWriteContract, writeContract } from '@wagmi/core'
+import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core'
 import dayjs from 'dayjs'
 import { encodeAbiParameters, parseAbiParameters, parseUnits } from 'viem'
 import { useAccount, useBalance, useNetwork } from 'wagmi'
 
-import { useApproveCallback } from './useApproveCallback'
 import { useAuctionForm } from './useAuctionForm'
 import EASY_AUCTION_ABI from '../constants/abis/easyAuction/easyAuction.json'
+import ERC20_ABI from '../constants/abis/erc20.json'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import {
-  ALLOW_LIST_OFF_CHAIN_MANAGED,
-  EASY_AUCTION_NETWORKS,
-  getEasyAuctionAddress,
-} from '../utils'
+import { ALLOW_LIST_OFF_CHAIN_MANAGED, getEasyAuctionAddress } from '../utils'
+import { getLogger } from '../utils/logger'
+
+const logger = getLogger('useSubmitAuction')
 
 type ValuesToSend = [
   string,
@@ -62,32 +60,6 @@ export const useSubmitAuction = () => {
     enabled: !!biddingTokenAddress,
   })
 
-  const auctioningToken = useMemo(
-    () =>
-      !isErrorFetchingAuctionAllowance || !chainId || !auctioningTokenData
-        ? undefined
-        : new Token(
-            chainId,
-            auctioningTokenAddress,
-            auctioningTokenData.decimals,
-            auctioningTokenData.symbol,
-          ),
-    [auctioningTokenData, auctioningTokenAddress, chainId, isErrorFetchingAuctionAllowance],
-  )
-
-  const approvalTokenAmount = useMemo(() => {
-    if (!auctioningTokenData) return undefined
-    if (!auctioningToken) return undefined
-    return new TokenAmount(auctioningToken, auctioningTokenData.value)
-  }, [auctioningTokenData, auctioningToken])
-
-  const [, approveCallback] = useApproveCallback(
-    approvalTokenAmount,
-    // @ts-ignore
-    EASY_AUCTION_NETWORKS[chainId],
-    chainId,
-  )
-
   const initiateNewAuction = useCallback(async () => {
     const {
       allowListData,
@@ -104,17 +76,17 @@ export const useSubmitAuction = () => {
     } = getValues()
 
     if (isErrorFetchingAuctionAllowance || isErrorFetchingBiddingAllowance) {
-      console.error('InitiateNewAuction called without tokens')
+      logger.error('InitiateNewAuction called without tokens')
       return
     }
 
     if (!auctioningTokenData) {
-      console.error('auctioningTokenData not found')
+      logger.error('auctioningTokenData not found')
       return
     }
 
     if (!biddingTokenData) {
-      console.error('biddingTokenData not found')
+      logger.error('biddingTokenData not found')
       return
     }
 
@@ -133,10 +105,38 @@ export const useSubmitAuction = () => {
     const orderCancellationEndDateDayjs = dayjs(orderCancellationEndDate)
 
     if (sellAmountInAtoms > auctioningTokenData.value) {
-      await approveCallback()
+      const { request } = await prepareWriteContract({
+        // @ts-ignore
+        address: auctioningTokenAddress,
+        // @ts-ignore
+        abi: ERC20_ABI,
+        // @ts-ignore
+        functionName: 'approve',
+        // @ts-ignore
+        args: [getEasyAuctionAddress(chainId || 1), sellAmountInAtoms],
+      })
+
+      const response = await writeContract(request)
+
+      addTransaction(response, {
+        summary: 'Approve ' + auctioningTokenData?.symbol,
+        approval: {
+          tokenAddress: auctioningTokenAddress,
+          spender: getEasyAuctionAddress(chainId || 1),
+        },
+      })
+      const data = await waitForTransaction({
+        hash: response.hash,
+        timeout: 60_000, // 2 seconds
+      })
+      if (!data) {
+        logger.error('Transaction failed')
+        return
+      }
     }
+
     if (!chainId) {
-      console.error('ChainId not found')
+      logger.error('ChainId not found')
       return
     }
     const valuesToSend: ValuesToSend = [
@@ -170,14 +170,17 @@ export const useSubmitAuction = () => {
       args: valuesToSend,
     })
 
-    return writeContract(request).then((response) => {
-      addTransaction(response, {
-        summary: `Auctioned ${sellAmount} ${auctioningTokenData.symbol} for ${minBuyAmount} ${biddingTokenData?.symbol}.`,
+    return writeContract(request)
+      .then((response) => {
+        addTransaction(response, {
+          summary: `Auctioned ${sellAmount} ${auctioningTokenData.symbol} for ${minBuyAmount} ${biddingTokenData?.symbol}.`,
+        })
+        return response.hash
       })
-      return response.hash
-    })
+      .catch((error) => {
+        logger.error(error)
+      })
   }, [
-    approveCallback,
     addTransaction,
     auctioningTokenData,
     biddingTokenData,
