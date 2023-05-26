@@ -48,6 +48,10 @@ const SubmitAuction = () => {
   }, [switchNetwork, initiateNewAuction, toggleWalletModal, account, selectedChain, chain])
 
   const onError = (errors: FieldErrors<LaunchAuctionFormValues>) => {
+    if (selectedChain !== chain.id) {
+      switchNetwork(selectedChain)
+      return
+    }
     Object.values(errors).forEach((error) => {
       const {
         message,
