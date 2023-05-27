@@ -10,6 +10,7 @@ import { Landing } from '../../../pages/Landing'
 import LaunchAuction from '../../../pages/LaunchAuction'
 import { Licenses } from '../../../pages/Licenses'
 import Overview from '../../../pages/Overview'
+import PrivateAuctionSigner from '../../../pages/PrivateAuctionSigner'
 import { Terms } from '../../../pages/Terms'
 import { CookiesBanner } from '../../common/CookiesBanner'
 import { TopDisclaimer } from '../../common/TopDisclaimer'
@@ -67,6 +68,7 @@ const AppRoutes: React.FC = () => {
               <Route element={<Overview />} path="/overview" />
               <Route element={<Landing />} path="/start" />
               <Route element={<LaunchAuction />} path="/launch-auction" />
+              <Route element={<PrivateAuctionSigner />} path="/private-auction-signer" />
               <Route element={<Terms />} path="/terms-and-conditions" />
               <Route element={<Licenses />} path="/licenses" />
               <Route element={<Documentation />} path="/docs" />
