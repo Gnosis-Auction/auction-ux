@@ -1,5 +1,5 @@
 import { rgba } from 'polished'
-import React, { ReactNode, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { Autocomplete, TextField } from '@mui/material'
@@ -121,7 +121,9 @@ const Button = styled.button`
 const PrivateAuctionSigner: React.FC = () => {
   const [currChain, setCurrChain] = useState(1)
   const [addresses, setAddresses] = useState<string[]>([])
+  const [searchInput, setSearchInput] = useState<string>('')
   const [whitelistedAddresses, setWhitelistedAddresses] = useState<any[]>([])
+  const [searchAddresses, setSearchAddresses] = useState<any[]>([])
   const auctionIdRef = useRef(null)
 
   const onAddressChange = (...values: any[]) => {
@@ -133,7 +135,14 @@ const PrivateAuctionSigner: React.FC = () => {
     console.log('addresses')
     console.log(addresses)
     setWhitelistedAddresses(addresses)
+    setSearchAddresses(addresses)
   }
+
+  useEffect(() => {
+    setSearchAddresses(
+      whitelistedAddresses.filter((address: string) => address.startsWith(searchInput)),
+    )
+  }, [searchInput, whitelistedAddresses])
 
   return (
     <>
@@ -184,7 +193,7 @@ const PrivateAuctionSigner: React.FC = () => {
         <Button onClick={submit}>Whitelist</Button>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
           <FieldRowLabel style={{ marginTop: '5em' }}>Whitelisted Addresses</FieldRowLabel>
-          <Input />
+          <Input onChange={(e) => setSearchInput(e.target.value)} value={searchInput} />
         </div>
         <div
           style={{
@@ -198,7 +207,7 @@ const PrivateAuctionSigner: React.FC = () => {
             overflow: 'scroll',
           }}
         >
-          {(whitelistedAddresses as any).map((address, index) => {
+          {(searchAddresses as any).map((address, index) => {
             console.log('address inside')
             console.log(address)
             return (
