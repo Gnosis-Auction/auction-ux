@@ -121,8 +121,8 @@ const Button = styled.button`
 const PrivateAuctionSigner: React.FC = () => {
   const [currChain, setCurrChain] = useState(1)
   const [addresses, setAddresses] = useState<string[]>([])
+  const [whitelistedAddresses, setWhitelistedAddresses] = useState<any[]>([])
   const auctionIdRef = useRef(null)
-  const whitelistedAddressesRef = useRef(null)
 
   const onAddressChange = (...values: any[]) => {
     const options = values[1]
@@ -132,6 +132,7 @@ const PrivateAuctionSigner: React.FC = () => {
   const submit = () => {
     console.log('addresses')
     console.log(addresses)
+    setWhitelistedAddresses(addresses)
   }
 
   return (
@@ -185,17 +186,28 @@ const PrivateAuctionSigner: React.FC = () => {
           <FieldRowLabel style={{ marginTop: '5em' }}>Whitelisted Addresses</FieldRowLabel>
           <Input />
         </div>
-        <input
-          readOnly
+        <div
           style={{
             backgroundColor: 'white',
             marginTop: '3em',
+            padding: '0.5em 1em',
             fontSize: '16px',
             borderRadius: '0.42rem',
             border: 'none',
             height: '10em',
+            overflow: 'scroll',
           }}
-        />
+        >
+          {(whitelistedAddresses as any).map((address, index) => {
+            console.log('address inside')
+            console.log(address)
+            return (
+              <li key={index} style={{ color: 'black', listStyle: 'none' }}>
+                {address}
+              </li>
+            )
+          })}
+        </div>
       </FormWrapper>
     </>
   )
