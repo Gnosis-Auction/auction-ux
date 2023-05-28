@@ -73,11 +73,6 @@ const Input = styled.input`
   border-radius: 0.42rem;
   margin-top: 1em;
   border: 1px solid ${({ theme }) => theme.text1};
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    width: 100%;
-    margin-right: 1em;
-    flex-direction: column;
-  `}
 `
 
 const FieldRowLabel = styled.div`
@@ -127,6 +122,7 @@ const PrivateAuctionSigner: React.FC = () => {
   const [currChain, setCurrChain] = useState(1)
   const [addresses, setAddresses] = useState<string[]>([])
   const auctionIdRef = useRef(null)
+  const whitelistedAddressesRef = useRef(null)
 
   const onAddressChange = (...values: any[]) => {
     const options = values[1]
@@ -185,6 +181,21 @@ const PrivateAuctionSigner: React.FC = () => {
           )}
         />
         <Button onClick={submit}>Whitelist</Button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+          <FieldRowLabel style={{ marginTop: '5em' }}>Whitelisted Addresses</FieldRowLabel>
+          <Input />
+        </div>
+        <input
+          readOnly
+          style={{
+            backgroundColor: 'white',
+            marginTop: '3em',
+            fontSize: '16px',
+            borderRadius: '0.42rem',
+            border: 'none',
+            height: '10em',
+          }}
+        />
       </FormWrapper>
     </>
   )
