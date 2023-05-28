@@ -1,9 +1,10 @@
 import { rgba } from 'polished'
-import React, { useRef, useState } from 'react'
+import React, { ReactNode, useRef, useState } from 'react'
 import styled from 'styled-components'
 
+import { Autocomplete, TextField } from '@mui/material'
+
 import { ButtonSelect } from '../../components/buttons/ButtonSelect'
-import { ButtonCSS } from '../../components/buttons/buttonStylingTypes'
 import { Dropdown, DropdownItem, DropdownPosition } from '../../components/common/Dropdown'
 import { chains } from '../../connectors'
 import { NETWORK_CONFIGS } from '../../utils/networkConfig'
@@ -124,7 +125,18 @@ const Button = styled.button`
 
 const PrivateAuctionSigner: React.FC = () => {
   const [currChain, setCurrChain] = useState(1)
+  const [addresses, setAddresses] = useState<string[]>([])
   const auctionIdRef = useRef(null)
+
+  const onAddressChange = (...values: any[]) => {
+    const options = values[1]
+    setAddresses(options)
+  }
+
+  const submit = () => {
+    console.log('addresses')
+    console.log(addresses)
+  }
 
   return (
     <>
@@ -151,8 +163,28 @@ const PrivateAuctionSigner: React.FC = () => {
         <FieldRowLabel className="label">Auction ID *</FieldRowLabel>
         <AuctionIdInput />
         <FieldRowLabel className="label">Whitelist Addresses *</FieldRowLabel>
-        <Input />
-        <Button>Whitelist</Button>
+        <Autocomplete
+          defaultValue={[]}
+          filterSelectedOptions
+          freeSolo
+          id="tags-outlined"
+          multiple
+          onChange={onAddressChange}
+          options={[]}
+          renderInput={(params: any) => (
+            <TextField
+              {...params}
+              style={{
+                backgroundColor: 'white',
+                marginTop: '1em',
+                fontSize: '16px',
+                borderRadius: '0.42rem',
+                border: `1px solid ${({ theme }) => theme.text1}`,
+              }}
+            />
+          )}
+        />
+        <Button onClick={submit}>Whitelist</Button>
       </FormWrapper>
     </>
   )
