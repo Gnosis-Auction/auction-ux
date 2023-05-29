@@ -1,12 +1,22 @@
 import { rgba } from 'polished'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import { Autocomplete, TextField } from '@mui/material'
+import { Alert, AlertColor, Autocomplete, Snackbar, TextField } from '@mui/material'
+import { getWalletClient } from '@wagmi/core'
+import axios from 'axios'
+import { useNetwork, useWalletClient } from 'wagmi'
 
+import {
+  ALLOW_LIST_VERIFIER_CONTRACTS,
+  // PINATA_JWT,
+  generateSignatures,
+  uploadSignature,
+} from './utils'
 import { ButtonSelect } from '../../components/buttons/ButtonSelect'
 import { Dropdown, DropdownItem, DropdownPosition } from '../../components/common/Dropdown'
 import { chains } from '../../connectors'
+import { PINATA_BASE_URL } from '../../constants/config'
 import { NETWORK_CONFIGS } from '../../utils/networkConfig'
 
 // const TitleWrapper = styled.div`
@@ -119,30 +129,106 @@ const Button = styled.button`
 `
 
 const PrivateAuctionSigner: React.FC = () => {
+  const { chain } = useNetwork()
+  // const { data: signer } = getWalletClient({chainId});
+  const { data: signer } = useWalletClient()
+
   const [currChain, setCurrChain] = useState(1)
   const [addresses, setAddresses] = useState<string[]>([])
   const [searchInput, setSearchInput] = useState<string>('')
   const [whitelistedAddresses, setWhitelistedAddresses] = useState<any[]>([])
   const [searchAddresses, setSearchAddresses] = useState<any[]>([])
+  const [snackbar, setSnackbar] = React.useState<{
+    open: boolean
+    message: string
+    severity: AlertColor
+  }>({
+    open: false,
+    message: '',
+    severity: 'success',
+  })
   const auctionIdRef = useRef(null)
-
-  const onAddressChange = (...values: any[]) => {
-    const options = values[1]
-    setAddresses(options)
-  }
-
-  const submit = () => {
-    console.log('addresses')
-    console.log(addresses)
-    setWhitelistedAddresses(addresses)
-    setSearchAddresses(addresses)
-  }
 
   useEffect(() => {
     setSearchAddresses(
       whitelistedAddresses.filter((address: string) => address.startsWith(searchInput)),
     )
   }, [searchInput, whitelistedAddresses])
+
+  const onAddressChange = (...values: any[]) => {
+    const options = values[1]
+    setAddresses(options)
+  }
+
+  const handleClose = () => {
+    setSnackbar((state) => ({
+      ...state,
+      open: false,
+      message: '',
+    }))
+  }
+
+  // const whitelistUrl = (auctionId: string) =>
+  // `${PINATA_BASE_URL}data/pinList?status=pinned&metadata[keyvalues][auctionId]={"value":"${auctionId}","op":"eq"}&pageLimit=1000`;
+
+  //   const fetchWhiteList = useCallback(async () => {
+  //     const response = await axios.get(whitelistUrl(auctionIdRef.current.value), {
+  //         headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${PINATA_JWT}`,
+  //         },
+  //     });
+  //     const rows = response?.data?.rows;
+  //     const entriesWithOccurrence = rows.reduce((acc: any, entry: any) => {
+  //         const occurrence =
+  //             acc.filter(
+  //                 (item: any) =>
+  //                     item.entry.metadata.keyvalues.address ===
+  //                         entry.metadata.keyvalues.address
+  //             ).length + 1;
+  //         acc.push({ entry, occurrence });
+  //         return acc;
+  //     }, []);
+  //     setWhitelistAddresses(entriesWithOccurrence);
+  // }, [auctionId]);
+
+  const submit = async () => {
+    console.log('addresses')
+    console.log(addresses)
+
+    if (addresses.length === 0) {
+      setSnackbar((state) => ({
+        ...state,
+        open: true,
+        message: 'Please enter a minimum of one address',
+        severity: 'error',
+      }))
+      return
+    }
+
+    setWhitelistedAddresses(addresses)
+    setSearchAddresses(addresses)
+
+    const chainId = chain?.id ?? 1
+    const signatures = await generateSignatures(
+      addresses,
+      signer,
+      auctionIdRef.current.value,
+      ALLOW_LIST_VERIFIER_CONTRACTS[chainId !== 0 ? chainId : 1],
+    )
+    await Promise.all(
+      signatures.map(async (signature) => {
+        const { signature: auctioneerSignedMessage, user } = signature
+        await uploadSignature(
+          `${chainId}`,
+          auctionIdRef.current.value,
+          user,
+          auctioneerSignedMessage,
+        )
+      }),
+    )
+    // setTimeout(fetchWhiteList, 10000)
+  }
 
   return (
     <>
@@ -208,8 +294,6 @@ const PrivateAuctionSigner: React.FC = () => {
           }}
         >
           {(searchAddresses as any).map((address, index) => {
-            console.log('address inside')
-            console.log(address)
             return (
               <li key={index} style={{ color: 'black', listStyle: 'none' }}>
                 {address}
@@ -218,6 +302,17 @@ const PrivateAuctionSigner: React.FC = () => {
           })}
         </div>
       </FormWrapper>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        message={snackbar.message}
+        onClose={handleClose}
+        open={snackbar.open}
+        sx={{ marginTop: '3%' }}
+      >
+        <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   )
 }
