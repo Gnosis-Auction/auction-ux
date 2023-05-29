@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 
 import { HashLink } from 'react-router-hash-link'
 
+import { TelegramIcon } from '../../icons/TelegramIcon'
 import { InnerContainer } from '../../pureStyledComponents/InnerContainer'
 
 const Wrapper = styled.footer`
@@ -118,6 +119,15 @@ export const Footer: React.FC = (props) => {
             target="_blank"
           >
             Support
+          </ExternalLink>
+        </Item>
+        <Item>
+          <ExternalLink
+            href="https://t.me/+APUOb1zLeRUzN2I1"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <TelegramIcon />
           </ExternalLink>
         </Item>
       </Inner>
