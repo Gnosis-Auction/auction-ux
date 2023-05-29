@@ -147,7 +147,7 @@ const PrivateAuctionSigner: React.FC = () => {
     message: '',
     severity: 'success',
   })
-  const auctionIdRef = useRef(null)
+  const [auctionId, setAuctionId] = useState('')
 
   useEffect(() => {
     setSearchAddresses(
@@ -205,6 +205,15 @@ const PrivateAuctionSigner: React.FC = () => {
       }))
       return
     }
+    if (auctionId === '') {
+      setSnackbar((state) => ({
+        ...state,
+        open: true,
+        message: 'Please enter a valid Auction Id',
+        severity: 'error',
+      }))
+      return
+    }
 
     setWhitelistedAddresses(addresses)
     setSearchAddresses(addresses)
@@ -213,18 +222,14 @@ const PrivateAuctionSigner: React.FC = () => {
     const signatures = await generateSignatures(
       addresses,
       signer,
-      auctionIdRef.current.value,
+      auctionId,
       ALLOW_LIST_VERIFIER_CONTRACTS[chainId !== 0 ? chainId : 1],
+      setSnackbar,
     )
     await Promise.all(
       signatures.map(async (signature) => {
         const { signature: auctioneerSignedMessage, user } = signature
-        await uploadSignature(
-          `${chainId}`,
-          auctionIdRef.current.value,
-          user,
-          auctioneerSignedMessage,
-        )
+        await uploadSignature(`${chainId}`, auctionId, user, auctioneerSignedMessage)
       }),
     )
     // setTimeout(fetchWhiteList, 10000)
@@ -253,7 +258,7 @@ const PrivateAuctionSigner: React.FC = () => {
       />
       <FormWrapper>
         <FieldRowLabel className="label">Auction ID *</FieldRowLabel>
-        <AuctionIdInput />
+        <AuctionIdInput onChange={(e) => setAuctionId(e.target.value)} />
         <FieldRowLabel className="label">Whitelist Addresses *</FieldRowLabel>
         <Autocomplete
           defaultValue={[]}
@@ -307,7 +312,7 @@ const PrivateAuctionSigner: React.FC = () => {
         message={snackbar.message}
         onClose={handleClose}
         open={snackbar.open}
-        sx={{ marginTop: '3%' }}
+        sx={{ marginTop: '4%' }}
       >
         <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
           {snackbar.message}
