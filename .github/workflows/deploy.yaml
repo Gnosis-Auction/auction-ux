@@ -15,7 +15,7 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
           submodules: recursive
 
       - name: Set output of cache
@@ -30,7 +30,8 @@ jobs:
           restore-keys: |
             yarn-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
+
       - name: 🏗️ Build main package
         run: yarn run build
 
