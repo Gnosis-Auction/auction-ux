@@ -1,0 +1,8 @@
+{
+  "build": {
+    "image": "fleek/create-react-app",
+    "command": "npm install && npm run generate",
+    "publicDir": "dist",
+    "baseDir": ""
+  }
+}
