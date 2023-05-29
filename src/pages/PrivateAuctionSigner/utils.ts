@@ -3,7 +3,7 @@ import { utils } from 'ethers'
 import axios from 'axios'
 import { mainnet, polygon, polygonMumbai } from 'wagmi/chains'
 
-const PINATA_JWT = process.env.REACT_APP_PINATA_JWT
+export const PINATA_JWT = process.env.REACT_APP_PINATA_JWT
 const PINATA_BASE_URL = 'https://api.pinata.cloud/'
 const pinJsonUrl = `${PINATA_BASE_URL}pinning/pinJSONToIPFS`
 
@@ -21,6 +21,7 @@ export async function generateSignatures(
   userSigner: any,
   auctionId: string,
   allowListContractAddress: string,
+  setSnackbar,
 ) {
   if (addresses?.length === 0) return []
   const chainId = await userSigner.getChainId()
@@ -30,13 +31,13 @@ export async function generateSignatures(
   const signatures: { user: string; signature: string }[] = []
   await Promise.all(
     addresses.map(async (address) => {
-      const auctioneerMessage = utils.keccak256(
-        utils.defaultAbiCoder.encode(
-          ['bytes32', 'address', 'uint256'],
-          [utils._TypedDataEncoder.hashDomain(contractDomain), address, auctionId],
-        ),
-      )
       try {
+        const auctioneerMessage = utils.keccak256(
+          utils.defaultAbiCoder.encode(
+            ['bytes32', 'address', 'uint256'],
+            [utils._TypedDataEncoder.hashDomain(contractDomain), address, auctionId],
+          ),
+        )
         const auctioneerSignature = await userSigner.signMessage(utils.arrayify(auctioneerMessage))
         const sig = utils.splitSignature(auctioneerSignature)
         const auctioneerSignatureEncoded = utils.defaultAbiCoder.encode(
@@ -48,7 +49,12 @@ export async function generateSignatures(
           signature: auctioneerSignatureEncoded,
         })
       } catch (e) {
-        console.log(e)
+        setSnackbar((state) => ({
+          ...state,
+          open: true,
+          message: `${String(e).substring(0, 22)}`,
+          severity: 'error',
+        }))
       }
     }),
   )
