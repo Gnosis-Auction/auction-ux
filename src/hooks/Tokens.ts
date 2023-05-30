@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { Token, WETH } from '@josojo/honeyswap-sdk'
 
 import { useActiveWeb3React } from './index'
-import { ALL_TOKENS } from '../constants/tokens'
 import { useAddUserToken, useFetchTokenByAddress, useUserAddedTokens } from '../state/user/hooks'
 import { ChainId, isAddress } from '../utils'
 
@@ -13,26 +12,14 @@ export function useAllTokens(): { [address: string]: Token } {
 
   return useMemo(() => {
     if (!chainId) return {}
-    const tokens = userAddedTokens
-      // reduce into all ALL_TOKENS filtered by the current chain
-      .reduce<{ [address: string]: Token }>(
-        (tokenMap, token) => {
-          tokenMap[token.address] = token
-          return tokenMap
-        },
-        // must make a copy because reduce modifies the map, and we do not
-        // want to make a copy in every iteration
-        { ...ALL_TOKENS[chainId as ChainId] },
-      )
-
     const weth = WETH[chainId as ChainId]
     if (weth) {
       // we have to replace it as a workaround because if it is automatically
       // fetched by address it will cause an invariant when used in constructing
       // pairs since we replace the name and symbol with 'ETH' and 'Ether'
-      tokens[weth.address] = weth
+      userAddedTokens[weth.address] = weth
     }
-    return tokens
+    return userAddedTokens
   }, [userAddedTokens, chainId])
 }
 
