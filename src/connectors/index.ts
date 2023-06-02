@@ -20,11 +20,23 @@ import {
   mainnet,
   polygon,
   polygonMumbai,
+  sepolia,
 } from './../utils/networkConfig'
 import { INFURA_KEY, PORTIS_ID, WALLET_CONNECT_PROJECT_ID } from '../constants/config'
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygonMumbai, gnosis, goerli, polygon, avalanche, avalancheFuji, bsc, bscTestnet],
+  [
+    mainnet,
+    polygonMumbai,
+    gnosis,
+    goerli,
+    polygon,
+    avalanche,
+    avalancheFuji,
+    bsc,
+    bscTestnet,
+    sepolia,
+  ],
   [infuraProvider({ apiKey: INFURA_KEY }), publicProvider()],
 )
 

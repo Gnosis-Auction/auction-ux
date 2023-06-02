@@ -9,6 +9,7 @@ import {
   mainnet,
   polygon,
   polygonMumbai,
+  sepolia,
 } from 'wagmi/chains'
 
 export {
@@ -21,6 +22,7 @@ export {
   avalancheFuji,
   bsc,
   bscTestnet,
+  sepolia,
 }
 export type { Chain }
 

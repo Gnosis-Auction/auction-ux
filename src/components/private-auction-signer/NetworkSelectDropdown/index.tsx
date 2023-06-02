@@ -1,14 +1,14 @@
 import { Controller } from 'react-hook-form'
 
-import { useAuctionForm } from '../../../hooks/useAuctionForm'
-import { LaunchAuctionFormValues } from '../../../pages/LaunchAuction/formConfig'
+import { usePrivateAuctionSignerForm } from '../../../hooks/usePrivateAuctionSignerForm'
+import { PrivateAuctionSignerFormValues } from '../../../pages/PrivateAuctionSigner/formConfig'
 import NetworkInput from '../../form/NetworkInput'
 
 export const NetworkSelectDropdown = () => {
-  const { control } = useAuctionForm()
+  const { control } = usePrivateAuctionSignerForm()
 
   return (
-    <Controller<LaunchAuctionFormValues>
+    <Controller<PrivateAuctionSignerFormValues>
       control={control}
       name="chainId"
       render={({ field: { onChange, value } }) => {

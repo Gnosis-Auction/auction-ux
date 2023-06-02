@@ -2,7 +2,11 @@ import { fetchToken } from '@wagmi/core'
 import { getAddress } from 'viem'
 
 import { useAuctionForm } from '../../../hooks/useAuctionForm'
-import { FORM_PARAMETERS, FormKeys } from '../../../pages/LaunchAuction/formConfig'
+import {
+  FORM_PARAMETERS,
+  FormKeys,
+  LaunchAuctionFormValues,
+} from '../../../pages/LaunchAuction/formConfig'
 import FormInput from '../../form/Input'
 import { addressRegex } from '../../form/NumericalInput'
 import Input from '../../form/TextInput'
@@ -11,12 +15,15 @@ const formKey: FormKeys = 'biddingTokenAddress'
 
 export const BiddingTokenInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { watch } = useAuctionForm()
+  const { clearErrors, getFieldState, register, watch } = useAuctionForm()
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
-      <Input
+      <Input<LaunchAuctionFormValues>
+        clearErrors={clearErrors}
+        getFieldState={getFieldState}
         name={formKey}
+        register={register}
         rules={{
           required: 'Please enter the bidding token address',
           pattern: addressRegex,
