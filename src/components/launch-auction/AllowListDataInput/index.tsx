@@ -1,7 +1,11 @@
 import { usePublicClient } from 'wagmi'
 
 import { useAuctionForm } from '../../../hooks/useAuctionForm'
-import { FORM_PARAMETERS, FormKeys } from '../../../pages/LaunchAuction/formConfig'
+import {
+  FORM_PARAMETERS,
+  FormKeys,
+  LaunchAuctionFormValues,
+} from '../../../pages/LaunchAuction/formConfig'
 import { checkIsContract } from '../../../utils'
 import FormInput from '../../form/Input'
 import { addressRegex } from '../../form/NumericalInput'
@@ -14,7 +18,7 @@ const isAllowedKey: FormKeys = 'isWhiteListingProcessUsed'
 export const AllowListDataInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
   const { label: isAllowedLabel, tooltipText: isAllowedTooltipText } = FORM_PARAMETERS[isAllowedKey]
-  const { watch } = useAuctionForm()
+  const { clearErrors, getFieldState, register, watch } = useAuctionForm()
   const provider = usePublicClient()
 
   const isWhiteListingProcessUsed = watch(isAllowedKey)
@@ -26,8 +30,11 @@ export const AllowListDataInput = () => {
       </FormInput>
       {isWhiteListingProcessUsed && (
         <FormInput label={label} tooltip={tooltipText}>
-          <Input
+          <Input<LaunchAuctionFormValues>
+            clearErrors={clearErrors}
+            getFieldState={getFieldState}
             name={formKey}
+            register={register}
             rules={{
               required: true,
               pattern: addressRegex,

@@ -6,7 +6,6 @@ import {
   UseFormClearErrors,
   UseFormGetFieldState,
   UseFormRegister,
-  UseFormWatch,
 } from 'react-hook-form'
 
 const TextInputWrapper = styled.div`
@@ -17,11 +16,11 @@ const TextInputWrapper = styled.div`
   width: 100%;
 `
 
-const Input = styled.input`
+const Input = styled.textarea`
   width: 32em;
-  height: 2.4em;
+  min-height: 2.4em;
   font-size: 16px;
-  padding: 0 0.5em;
+  padding: 0.5em 0.5em;
   border-radius: 0.42rem;
   border: 1px solid ${({ theme }) => theme.text1};
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -38,7 +37,7 @@ const Error = styled.span`
   margin-top: 0.5em;
 `
 
-export function TextInput<FormValues>({
+export function MultilineTextInput<FormValues>({
   clearErrors,
   getFieldState,
   name,
@@ -46,7 +45,6 @@ export function TextInput<FormValues>({
   readOnly,
   register,
   rules = {},
-  watch,
 }: {
   name: FieldPath<FormValues>
   readOnly?: boolean
@@ -55,7 +53,6 @@ export function TextInput<FormValues>({
   clearErrors: UseFormClearErrors<FormValues>
   getFieldState: UseFormGetFieldState<FormValues>
   register: UseFormRegister<FormValues>
-  watch?: UseFormWatch<FormValues>
 }) {
   const { error, isTouched } = getFieldState(name)
   const { onBlur, onChange, ref } = register(name, rules)
@@ -64,14 +61,12 @@ export function TextInput<FormValues>({
     onChange(val)
     clearErrors(name)
   }
-  if (watch) watch(name)
 
   return (
     <TextInputWrapper>
       <Input
         autoComplete="off"
         autoCorrect="off"
-        maxLength={79}
         minLength={1}
         name={name}
         onBlur={onBlur}
@@ -79,12 +74,12 @@ export function TextInput<FormValues>({
         placeholder={placeholder || ''}
         readOnly={readOnly}
         ref={ref}
+        rows={10}
         spellCheck="false"
-        type="text"
       />
       {error?.message && isTouched && <Error>{error?.message}</Error>}
     </TextInputWrapper>
   )
 }
 
-export default TextInput
+export default MultilineTextInput

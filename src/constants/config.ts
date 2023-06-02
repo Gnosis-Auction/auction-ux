@@ -63,6 +63,7 @@ export const NUMBER_OF_DIGITS_FOR_INVERSION = 6
 
 export const PINATA_BASE_URL = 'https://api.pinata.cloud/'
 export const PINATA_QUERY_URL = 'https://gateway.pinata.cloud/ipfs/'
+export const PINATA_PIN_JSON_URL = `${PINATA_BASE_URL}pinning/pinJSONToIPFS`
 
 export const isDev = process.env.NODE_ENV === 'development'
 

@@ -3,7 +3,11 @@ import { formatUnits, getAddress, parseUnits } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { useAuctionForm } from '../../../hooks/useAuctionForm'
-import { FORM_PARAMETERS, FormKeys } from '../../../pages/LaunchAuction/formConfig'
+import {
+  FORM_PARAMETERS,
+  FormKeys,
+  LaunchAuctionFormValues,
+} from '../../../pages/LaunchAuction/formConfig'
 import FormInput from '../../form/Input'
 import { addressRegex } from '../../form/NumericalInput'
 import Input from '../../form/TextInput'
@@ -12,13 +16,16 @@ const formKey: FormKeys = 'auctioningTokenAddress'
 
 export const AuctioningTokenInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { watch } = useAuctionForm()
+  const { clearErrors, getFieldState, register, watch } = useAuctionForm()
   const { address } = useAccount()
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
-      <Input
+      <Input<LaunchAuctionFormValues>
+        clearErrors={clearErrors}
+        getFieldState={getFieldState}
         name={formKey}
+        register={register}
         rules={{
           required: 'Please enter the auctioning token address',
           pattern: addressRegex,
