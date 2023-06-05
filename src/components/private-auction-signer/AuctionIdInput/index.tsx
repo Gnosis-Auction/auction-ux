@@ -15,7 +15,7 @@ const formKey: FormKeys = 'auctionId'
 
 export const AuctionIdInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { clearErrors, getFieldState, register, watch } = usePrivateAuctionSignerForm()
+  const { clearErrors, formState, getFieldState, register, watch } = usePrivateAuctionSignerForm()
   const { address } = useAccount()
 
   const chainId = watch('chainId')
@@ -24,6 +24,7 @@ export const AuctionIdInput = () => {
     <FormInput label={label} tooltip={tooltipText}>
       <Input<PrivateAuctionSignerFormValues>
         clearErrors={clearErrors}
+        formState={formState}
         getFieldState={getFieldState}
         name={formKey}
         register={register}
@@ -54,6 +55,7 @@ export const AuctionIdInput = () => {
             },
           },
         }}
+        showError={getFieldState(formKey).isDirty}
         watch={watch}
       />
     </FormInput>

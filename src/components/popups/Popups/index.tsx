@@ -12,6 +12,7 @@ import { ExternalLink } from '../../../theme'
 import { AutoColumn } from '../../swap/Column'
 import Row from '../../swap/Row'
 import DoubleTokenLogo from '../../token/DoubleLogo'
+import SignerPopup from '../SignerPopup'
 import TxnPopup from '../TxnPopup'
 
 const StyledClose = styled(X)`
@@ -131,6 +132,11 @@ function PopupItem({ content, popKey }: { content: PopupContent; popKey: string 
     } = content
 
     return <PoolPopup token0={token0} token1={token1} />
+  } else if ('addressSigned' in content) {
+    const {
+      addressSigned: { address, success, summary },
+    } = content
+    return <SignerPopup address={address} success={success} summary={summary} />
   }
 }
 

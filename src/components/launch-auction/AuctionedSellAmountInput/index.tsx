@@ -12,12 +12,13 @@ const formKey: FormKeys = 'auctionedSellAmount'
 
 export const AuctionedSellAmountInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { clearErrors, getFieldState, register } = useAuctionForm()
+  const { clearErrors, formState, getFieldState, register } = useAuctionForm()
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
       <Input<LaunchAuctionFormValues>
         clearErrors={clearErrors}
+        formState={formState}
         getFieldState={getFieldState}
         name={formKey}
         register={register}
@@ -28,6 +29,7 @@ export const AuctionedSellAmountInput = () => {
             min: (value) => value > 0 || 'Amount to sell must be positive',
           },
         }}
+        showError={getFieldState(formKey).isTouched}
       />
     </FormInput>
   )

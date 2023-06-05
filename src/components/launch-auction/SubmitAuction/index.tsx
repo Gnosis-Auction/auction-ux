@@ -59,7 +59,11 @@ const SubmitAuction = () => {
         ref: { name },
       } = error
       setError(name, { type: 'custom', message })
-      setValue(name, getValues()[name], { shouldValidate: true, shouldTouch: true })
+      setValue(name, getValues()[name], {
+        shouldValidate: true,
+        shouldTouch: true,
+        shouldDirty: true,
+      })
     })
   }
 

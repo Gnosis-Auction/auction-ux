@@ -16,13 +16,14 @@ const formKey: FormKeys = 'auctioningTokenAddress'
 
 export const AuctioningTokenInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { clearErrors, getFieldState, register, watch } = useAuctionForm()
+  const { clearErrors, formState, getFieldState, register, watch } = useAuctionForm()
   const { address } = useAccount()
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
       <Input<LaunchAuctionFormValues>
         clearErrors={clearErrors}
+        formState={formState}
         getFieldState={getFieldState}
         name={formKey}
         register={register}
@@ -83,6 +84,7 @@ export const AuctioningTokenInput = () => {
             },
           },
         }}
+        showError={getFieldState(formKey).isTouched}
       />
     </FormInput>
   )

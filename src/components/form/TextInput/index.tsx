@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 
 import {
+  FieldErrors,
   FieldPath,
+  FormState,
   RegisterOptions,
   UseFormClearErrors,
   UseFormGetFieldState,
@@ -40,29 +42,35 @@ const Error = styled.span`
 
 export function TextInput<FormValues>({
   clearErrors,
+  formState,
   getFieldState,
   name,
   placeholder,
   readOnly,
   register,
   rules = {},
+  showError = true,
   watch,
 }: {
+  formState: FormState<FormValues>
   name: FieldPath<FormValues>
   readOnly?: boolean
   placeholder?: string
   rules?: RegisterOptions
-  clearErrors: UseFormClearErrors<FormValues>
+  showError?: boolean
   getFieldState: UseFormGetFieldState<FormValues>
+  clearErrors?: UseFormClearErrors<FormValues>
   register: UseFormRegister<FormValues>
   watch?: UseFormWatch<FormValues>
 }) {
-  const { error, isTouched } = getFieldState(name)
+  const { errors } = formState
+  // const { isDirty } = getFieldState(name)
+  const error = errors[name] as FieldErrors
   const { onBlur, onChange, ref } = register(name, rules)
 
   const onChangeHandler = (val) => {
     onChange(val)
-    clearErrors(name)
+    if (clearErrors) clearErrors(name)
   }
   if (watch) watch(name)
 
@@ -82,7 +90,7 @@ export function TextInput<FormValues>({
         spellCheck="false"
         type="text"
       />
-      {error?.message && isTouched && <Error>{error?.message}</Error>}
+      {error?.message && showError && <Error>{error?.message}</Error>}
     </TextInputWrapper>
   )
 }

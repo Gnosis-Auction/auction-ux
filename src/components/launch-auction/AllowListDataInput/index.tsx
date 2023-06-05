@@ -18,7 +18,7 @@ const isAllowedKey: FormKeys = 'isWhiteListingProcessUsed'
 export const AllowListDataInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
   const { label: isAllowedLabel, tooltipText: isAllowedTooltipText } = FORM_PARAMETERS[isAllowedKey]
-  const { clearErrors, getFieldState, register, watch } = useAuctionForm()
+  const { clearErrors, formState, getFieldState, register, watch } = useAuctionForm()
   const provider = usePublicClient()
 
   const isWhiteListingProcessUsed = watch(isAllowedKey)
@@ -32,6 +32,7 @@ export const AllowListDataInput = () => {
         <FormInput label={label} tooltip={tooltipText}>
           <Input<LaunchAuctionFormValues>
             clearErrors={clearErrors}
+            formState={formState}
             getFieldState={getFieldState}
             name={formKey}
             register={register}
@@ -46,6 +47,7 @@ export const AllowListDataInput = () => {
                 },
               },
             }}
+            showError={getFieldState(formKey).isTouched}
           />
         </FormInput>
       )}

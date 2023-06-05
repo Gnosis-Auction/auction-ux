@@ -12,12 +12,13 @@ const formKey: FormKeys = 'minimumBiddingAmountPerOrder'
 
 export const MinimumBiddingAmountPerOrderInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { clearErrors, getFieldState, register } = useAuctionForm()
+  const { clearErrors, formState, getFieldState, register } = useAuctionForm()
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
       <Input<LaunchAuctionFormValues>
         clearErrors={clearErrors}
+        formState={formState}
         getFieldState={getFieldState}
         name={formKey}
         register={register}
@@ -28,6 +29,7 @@ export const MinimumBiddingAmountPerOrderInput = () => {
             min: (value) => value > 0 || 'Minimal bid amount must be greather than 0',
           },
         }}
+        showError={getFieldState(formKey).isTouched}
       />
     </FormInput>
   )
