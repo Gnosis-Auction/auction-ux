@@ -20,6 +20,13 @@ export type PopupContent =
         }
       }
     }
+  | {
+      addressSigned: {
+        address: string
+        success?: boolean
+        summary?: string
+      }
+    }
 
 export const updateBlockNumber = createAction<{
   chainId: number

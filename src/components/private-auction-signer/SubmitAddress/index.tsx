@@ -4,13 +4,12 @@ import styled from 'styled-components'
 import { FieldErrors } from 'react-hook-form'
 import { useAccount, useNetwork } from 'wagmi'
 
-import { useIsPrivateAuction } from '../../../hooks/useIsPrivateAuction'
 import { usePrivateAuctionSignerForm } from '../../../hooks/usePrivateAuctionSignerForm'
 import useSwitchNetwork from '../../../hooks/useSwitchNetwork'
 import { PrivateAuctionSignerFormValues } from '../../../pages/PrivateAuctionSigner/formConfig'
 import useGenerateSignature from '../../../pages/PrivateAuctionSigner/hooks/useGenerateSignature'
 import { uploadSignature } from '../../../pages/PrivateAuctionSigner/utils'
-import { useWalletModalToggle } from '../../../state/application/hooks'
+import { useAddPopup, useWalletModalToggle } from '../../../state/application/hooks'
 import { NETWORK_CONFIGS } from '../../../utils/networkConfig'
 import { Button } from '../../buttons/Button'
 
@@ -32,11 +31,10 @@ const SubmitAddress = () => {
   const { chain } = useNetwork()
   const { address: account } = useAccount()
   const toggleWalletModal = useWalletModalToggle()
+  const addPopup = useAddPopup()
 
-  const { getFieldState, getValues, handleSubmit, setError, setValue, watch } =
-    usePrivateAuctionSignerForm()
+  const { getValues, handleSubmit, setError, setValue, watch } = usePrivateAuctionSignerForm()
 
-  const { invalid } = getFieldState('auctionId')
   const auctionId = watch('auctionId')
 
   const selectedChain = getValues().chainId
@@ -60,9 +58,17 @@ const SubmitAddress = () => {
           user,
           auctioneerSignedMessage,
         )
+        addPopup({
+          addressSigned: {
+            address: user,
+            success: true,
+            summary: `The address ${user} has been whitelisted for the auction ${auctionId} on ${NETWORK_CONFIGS[selectedChain]?.name}`,
+          },
+        })
       }),
     )
   }, [
+    addPopup,
     switchNetwork,
     generateSignatures,
     toggleWalletModal,
@@ -87,10 +93,6 @@ const SubmitAddress = () => {
       setValue(name, getValues()[name], { shouldValidate: true, shouldTouch: true })
     })
   }
-
-  const { isLoading, isPrivateAuction } = useIsPrivateAuction({ auctionId, chainId: selectedChain })
-
-  if (!auctionId || (auctionId && invalid) || isLoading || !isPrivateAuction) return null
 
   return (
     <ActionButton disabled={!selectedChain} onClick={handleSubmit(onSubmit, onError)}>

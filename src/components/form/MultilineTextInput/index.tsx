@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 
 import {
+  FieldErrors,
   FieldPath,
+  FormState,
   RegisterOptions,
   UseFormClearErrors,
   UseFormGetFieldState,
@@ -39,7 +41,8 @@ const Error = styled.span`
 
 export function MultilineTextInput<FormValues>({
   clearErrors,
-  getFieldState,
+  disabled,
+  formState,
   name,
   placeholder,
   readOnly,
@@ -47,14 +50,16 @@ export function MultilineTextInput<FormValues>({
   rules = {},
 }: {
   name: FieldPath<FormValues>
+  formState: FormState<FormValues>
   readOnly?: boolean
+  disabled?: boolean
   placeholder?: string
   rules?: RegisterOptions
   clearErrors: UseFormClearErrors<FormValues>
-  getFieldState: UseFormGetFieldState<FormValues>
   register: UseFormRegister<FormValues>
 }) {
-  const { error, isTouched } = getFieldState(name)
+  const { errors, isDirty } = formState
+  const error = (errors[name] as FieldErrors)?.message
   const { onBlur, onChange, ref } = register(name, rules)
 
   const onChangeHandler = (val) => {
@@ -67,6 +72,7 @@ export function MultilineTextInput<FormValues>({
       <Input
         autoComplete="off"
         autoCorrect="off"
+        disabled={disabled}
         minLength={1}
         name={name}
         onBlur={onBlur}
@@ -77,7 +83,7 @@ export function MultilineTextInput<FormValues>({
         rows={10}
         spellCheck="false"
       />
-      {error?.message && isTouched && <Error>{error?.message}</Error>}
+      {error?.message && isDirty && <Error>{error?.message}</Error>}
     </TextInputWrapper>
   )
 }

@@ -12,12 +12,13 @@ const formKey: FormKeys = 'minimumFundingThreshold'
 
 export const MinimumFundingThresholdInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
-  const { clearErrors, getFieldState, register } = useAuctionForm()
+  const { clearErrors, formState, getFieldState, register } = useAuctionForm()
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
       <Input<LaunchAuctionFormValues>
         clearErrors={clearErrors}
+        formState={formState}
         getFieldState={getFieldState}
         name={formKey}
         register={register}
@@ -25,6 +26,7 @@ export const MinimumFundingThresholdInput = () => {
           required: 'Please enter the minimum funding threshold.',
           pattern: positiveNumberRegex,
         }}
+        showError={getFieldState(formKey).isTouched}
       />
     </FormInput>
   )

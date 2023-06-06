@@ -16,25 +16,24 @@ const formKey: FormKeys = 'whitelistedAddress'
 export const WhitelistAddressInput = () => {
   const { label, tooltipText } = FORM_PARAMETERS[formKey]
 
-  const { clearErrors, getFieldState, register, watch } = usePrivateAuctionSignerForm()
+  const { clearErrors, formState, register, watch } = usePrivateAuctionSignerForm()
   const { address } = useAccount()
   const auctionId = watch('auctionId')
   const chainId = watch('chainId')
   const { auctionSigner, isLoading, isPrivateAuction } = useIsPrivateAuction({ auctionId, chainId })
 
-  if (
+  const disabled =
     !auctionId ||
     isLoading ||
     !isPrivateAuction ||
     auctionSigner.toLowerCase() !== address?.toLowerCase()
-  )
-    return null
 
   return (
     <FormInput label={label} tooltip={tooltipText}>
       <TextInput<PrivateAuctionSignerFormValues>
         clearErrors={clearErrors}
-        getFieldState={getFieldState}
+        disabled={disabled}
+        formState={formState}
         name={formKey}
         register={register}
         rules={{
