@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { FieldErrors } from 'react-hook-form'
@@ -11,6 +12,46 @@ import { LaunchAuctionFormValues } from '../../../pages/LaunchAuction/formConfig
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { NETWORK_CONFIGS } from '../../../utils/networkConfig'
 import { Button } from '../../buttons/Button'
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2em;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin-top: 1em;
+  `}
+`
+
+const LinkWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+`
+
+const Item = styled(NavLink)`
+  align-items: center;
+  color: ${({ theme }) => theme.primary1};
+  display: flex;
+  line-height: 1.2;
+  text-decoration: none;
+  font-size: 16px;
+  transition: all 0.1s linear;
+
+  &.active {
+    color: ${({ theme }) => theme.primary1};
+
+    .fill {
+      fill: ${({ theme }) => theme.primary1};
+    }
+  }
+
+  &.active:active,
+  &:active {
+    color: ${({ theme }) => theme.primary1};
+    opacity: 0.5;
+  }
+`
 
 const ActionButton = styled(Button)`
   flex-shrink: 0;
@@ -48,6 +89,10 @@ const SubmitAuction = () => {
   }, [switchNetwork, initiateNewAuction, toggleWalletModal, account, selectedChain, chain])
 
   const onError = (errors: FieldErrors<LaunchAuctionFormValues>) => {
+    if (!account) {
+      toggleWalletModal()
+      return
+    }
     if (selectedChain !== chain.id) {
       switchNetwork(selectedChain)
       return
@@ -68,11 +113,16 @@ const SubmitAuction = () => {
   }
 
   return (
-    <ActionButton disabled={!selectedChain} onClick={handleSubmit(onSubmit, onError)}>
-      {chain?.id === selectedChain || !selectedChain
-        ? 'Launch Auction'
-        : `Switch Network (${NETWORK_CONFIGS[selectedChain]?.name || ''})`}
-    </ActionButton>
+    <Wrapper>
+      <ActionButton disabled={!selectedChain} onClick={handleSubmit(onSubmit, onError)}>
+        {chain?.id === selectedChain || !selectedChain
+          ? 'Launch Auction'
+          : `Switch Network (${NETWORK_CONFIGS[selectedChain]?.name || ''})`}
+      </ActionButton>
+      <LinkWrapper>
+        <Item to="/private-auction-signer">Click here {'\u00A0'}</Item> to sign private auctions
+      </LinkWrapper>
+    </Wrapper>
   )
 }
 

@@ -44,7 +44,7 @@ const SubmitAddress = () => {
       toggleWalletModal()
       return
     }
-    if (selectedChain !== chain.id) {
+    if (selectedChain !== chain?.id) {
       switchNetwork(selectedChain)
       return
     }
@@ -79,7 +79,11 @@ const SubmitAddress = () => {
   ])
 
   const onError = (errors: FieldErrors<PrivateAuctionSignerFormValues>) => {
-    if (selectedChain !== chain.id) {
+    if (!account) {
+      toggleWalletModal()
+      return
+    }
+    if (selectedChain !== chain?.id) {
       switchNetwork(selectedChain)
       return
     }
