@@ -54,7 +54,7 @@ function createAdditionalServiceApi(): AdditionalServicesApi {
       graph_url_develop: GRAPH_API_URL_DEVELOP_BSC,
     },
   ]
-  if (isDev && GRAPH_API_URL_DEVELOP_GOERLI)
+  if (GRAPH_API_URL_DEVELOP_GOERLI)
     config.push({
       networkId: 5,
       graph_url_production: GRAPH_API_URL_PRODUCTION_GOERLI,
