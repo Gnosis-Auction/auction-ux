@@ -8,6 +8,7 @@ import { LaunchAuctionFormValues } from '../../../pages/LaunchAuction/formConfig
 import { NETWORK_CONFIGS } from '../../../utils/networkConfig'
 import { ButtonSelect } from '../../buttons/ButtonSelect'
 import { Dropdown, DropdownItem, DropdownPosition } from '../../common/Dropdown'
+import { IconSelect } from '../IconSelect'
 
 const DropdownPagination = styled(Dropdown)`
   width: 30%;
@@ -19,7 +20,7 @@ const DropdownPagination = styled(Dropdown)`
   margin-right: 3.5em !important;
   cursor: pointer;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 12em;
+    width: 14em;
     margin-right: 0 !important;
   `}
 `
@@ -28,6 +29,22 @@ const ButtonText = styled.span`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 14px;
   `}
+`
+
+const ButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const Icon = styled.div`
+  margin: 0px 25px 0px;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin: 0px 10px 0px 0px;
+  `}
+`
+
+const IconItem = styled.div`
+  margin: 0px 10px 0px 0px;
 `
 
 export const NetworkSelectDropdown = () => {
@@ -42,7 +59,14 @@ export const NetworkSelectDropdown = () => {
           <DropdownPagination
             dropdownButtonContent={
               <ButtonSelect
-                content={<ButtonText>{NETWORK_CONFIGS[value as number].name}</ButtonText>}
+                content={
+                  <ButtonContent>
+                    <Icon>
+                      <IconSelect name={NETWORK_CONFIGS[value as number].name} />
+                    </Icon>
+                    <ButtonText>{NETWORK_CONFIGS[value as number].name}</ButtonText>
+                  </ButtonContent>
+                }
               />
             }
             dropdownPosition={DropdownPosition.right}
@@ -53,6 +77,9 @@ export const NetworkSelectDropdown = () => {
                   onChange(item.id)
                 }}
               >
+                <IconItem>
+                  <IconSelect name={item.name} />
+                </IconItem>
                 {item.name}
               </DropdownItem>
             ))}
