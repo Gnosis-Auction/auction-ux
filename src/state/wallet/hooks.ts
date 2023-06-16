@@ -42,7 +42,10 @@ export function useTokenBalances(
             [tokenAddress: string]: TokenAmount | undefined
           }>((memo, token, i) => {
             const value = balances?.[i]
-            const amount = value?.result ? JSBI.BigInt(value.result.toString()) : undefined
+            const amount =
+              value?.result || value?.result === BigInt(0)
+                ? JSBI.BigInt(value.result.toString())
+                : undefined
             if (amount) {
               memo[token.address] = new TokenAmount(token, amount)
             }
