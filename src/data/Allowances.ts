@@ -21,7 +21,10 @@ export function useTokenAllowance(
   })
 
   return useMemo(
-    () => (token && allowance ? new TokenAmount(token, allowance.toString()) : undefined),
+    () =>
+      token && (allowance || allowance === BigInt(0))
+        ? new TokenAmount(token, allowance.toString())
+        : undefined,
     [token, allowance],
   )
 }
